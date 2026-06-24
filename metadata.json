@@ -1,0 +1,6 @@
+{
+  "name": "Calcfino",
+  "description": "A premium, modern financial tools web application with 70+ calculators, interactive charts, finance blog, and responsive user features.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,347 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Base font sizes & global resets to respect typography specifications */
+body {
+  font-size: 16px;
+  line-height: 1.5;
+}
+@media (min-width: 768px) {
+  body {
+    font-size: 17px;
+  }
+}
+@media (min-width: 1024px) {
+  body {
+    font-size: 18px;
+  }
+}
+
+/* Base Tag Typography (Safe defaults, can be overridden by specific utility classes) */
+h1 {
+  font-size: 34px;
+  line-height: 1.2;
+}
+@media (min-width: 768px) {
+  h1 {
+    font-size: 46px;
+  }
+}
+@media (min-width: 1024px) {
+  h1 {
+    font-size: 56px;
+  }
+}
+
+h2 {
+  font-size: 28px;
+  line-height: 1.25;
+}
+@media (min-width: 768px) {
+  h2 {
+    font-size: 36px;
+  }
+}
+@media (min-width: 1024px) {
+  h2 {
+    font-size: 42px;
+  }
+}
+
+h3 {
+  font-size: 24px;
+  line-height: 1.3;
+}
+@media (min-width: 768px) {
+  h3 {
+    font-size: 28px;
+  }
+}
+@media (min-width: 1024px) {
+  h3 {
+    font-size: 32px;
+  }
+}
+
+h4 {
+  font-size: 20px;
+  line-height: 1.35;
+}
+@media (min-width: 1024px) {
+  h4 {
+    font-size: 24px;
+  }
+}
+
+h5 {
+  font-size: 18px;
+  line-height: 1.4;
+}
+@media (min-width: 1024px) {
+  h5 {
+    font-size: 20px;
+  }
+}
+
+label {
+  font-size: 16px;
+}
+@media (min-width: 1024px) {
+  label {
+    font-size: 17px;
+  }
+}
+
+input, select, textarea {
+  font-size: 16px;
+}
+@media (min-width: 1024px) {
+  input, select, textarea {
+    font-size: 17px;
+  }
+}
+
+button {
+  font-size: 16px;
+}
+@media (min-width: 1024px) {
+  button {
+    font-size: 17px;
+  }
+}
+
+/* Explicit Custom Classes (Enforced matching via !important) */
+.app-h1 {
+  font-size: 34px !important;
+  line-height: 1.2 !important;
+}
+@media (min-width: 768px) {
+  .app-h1 {
+    font-size: 46px !important;
+  }
+}
+@media (min-width: 1024px) {
+  .app-h1 {
+    font-size: 56px !important;
+  }
+}
+
+.app-h2 {
+  font-size: 28px !important;
+  line-height: 1.25 !important;
+}
+@media (min-width: 768px) {
+  .app-h2 {
+    font-size: 36px !important;
+  }
+}
+@media (min-width: 1024px) {
+  .app-h2 {
+    font-size: 42px !important;
+  }
+}
+
+.app-h3 {
+  font-size: 24px !important;
+  line-height: 1.3 !important;
+}
+@media (min-width: 768px) {
+  .app-h3 {
+    font-size: 28px !important;
+  }
+}
+@media (min-width: 1024px) {
+  .app-h3 {
+    font-size: 32px !important;
+  }
+}
+
+.app-h4 {
+  font-size: 20px !important;
+  line-height: 1.35 !important;
+}
+@media (min-width: 1024px) {
+  .app-h4 {
+    font-size: 24px !important;
+  }
+}
+
+.app-h5 {
+  font-size: 18px !important;
+  line-height: 1.4 !important;
+}
+@media (min-width: 1024px) {
+  .app-h5 {
+    font-size: 20px !important;
+  }
+}
+
+/* Body & Content Text */
+.app-body {
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+}
+@media (min-width: 768px) {
+  .app-body {
+    font-size: 17px !important;
+  }
+}
+@media (min-width: 1024px) {
+  .app-body {
+    font-size: 18px !important;
+  }
+}
+
+/* Card Specific Text */
+.app-card-text {
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+}
+@media (min-width: 1024px) {
+  .app-card-text {
+    font-size: 17px !important;
+  }
+}
+
+/* Form Labels (Input and Calculator Labels) */
+.app-input-label, .app-calc-label {
+  font-size: 16px !important;
+  line-height: 1.4 !important;
+}
+@media (min-width: 1024px) {
+  .app-input-label, .app-calc-label {
+    font-size: 17px !important;
+  }
+}
+
+/* Inputs and Select fields (Calculator Inputs) */
+.app-calc-input {
+  font-size: 16px !important;
+}
+@media (min-width: 1024px) {
+  .app-calc-input {
+    font-size: 17px !important;
+  }
+}
+
+/* Interactive elements: Buttons & Navigation */
+.app-button, .app-nav {
+  font-size: 16px !important;
+}
+@media (min-width: 1024px) {
+  .app-button, .app-nav {
+    font-size: 17px !important;
+  }
+}
+
+/* Footer elements */
+.app-footer {
+  font-size: 16px !important;
+}
+
+/* High-Impact Calculator Result Numbers */
+.app-calc-result {
+  font-size: 28px !important;
+}
+@media (min-width: 1024px) {
+  .app-calc-result {
+    font-size: 36px !important; /* Satisfies 32px-40px range */
+  }
+}
+
+/* Premium Keyframe Animations for Modern Fintech Grid */
+@keyframes premium-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1.5deg);
+  }
+}
+
+@keyframes premium-float-delayed {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(-1deg);
+  }
+}
+
+@keyframes premium-float-slow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(3deg);
+  }
+}
+
+@keyframes premium-pulse-glow {
+  0%, 100% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.2));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.45));
+  }
+}
+
+@keyframes premium-pulse-glow-emerald {
+  0%, 100% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.2));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.45));
+  }
+}
+
+.animate-premium-float {
+  animation: premium-float 4s ease-in-out infinite;
+}
+
+.animate-premium-float-delayed {
+  animation: premium-float-delayed 4.5s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+.animate-premium-float-slow {
+  animation: premium-float-slow 7s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: premium-pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow-emerald {
+  animation: premium-pulse-glow-emerald 3.3s ease-in-out infinite;
+}
+
+/* Ripple wave effect */
+.ripple-element {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(0);
+  animation: ripple-animation 0.6s linear;
+  pointer-events: none;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+
