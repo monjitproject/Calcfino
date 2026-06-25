@@ -9,61 +9,186 @@ import BlogPostPage from './pages/BlogPostPage';
 import Dashboard from './components/Dashboard';
 import LegalPages from './pages/LegalPages';
 import OnboardingTour from './components/OnboardingTour';
+import SEO from './components/SEO';
+import { calculators } from './data/calculators';
+import { 
+  getSeoMetadata, 
+  normalizeUrl, 
+  generateRobotsTxt, 
+  generateSitemapXml 
+} from './utils/seo';
+
+/**
+ * Parses pathname and search parameters into a clean state-based route object
+ */
+function parseLocation(pathname: string, search: string) {
+  const normPath = pathname.toLowerCase().replace(/\/+/g, '/').replace(/\/$/, '');
+  const params = new URLSearchParams(search);
+  
+  if (normPath === '' || normPath === '/') {
+    return { view: 'home', params: null };
+  }
+  
+  const segments = normPath.split('/').filter(Boolean);
+  
+  // Blog paths: /blog, /blog/page/2, /blog/post-slug
+  if (segments[0] === 'blog') {
+    if (!segments[1]) {
+      return { view: 'blog', params: { page: 1 } };
+    }
+    if (segments[1] === 'page' && segments[2]) {
+      const pageNum = parseInt(segments[2], 10) || 1;
+      return { view: 'blog', params: { page: pageNum } };
+    }
+    return { view: `blog-${segments[1]}`, params: { slug: segments[1] } };
+  }
+  
+  // Category paths: /category/investment, /category/loan/page/3
+  if (segments[0] === 'category' && segments[1]) {
+    let pageNum = 1;
+    if (segments[2] === 'page' && segments[3]) {
+      pageNum = parseInt(segments[3], 10) || 1;
+    }
+    return { view: 'blog', params: { category: segments[1], page: pageNum } };
+  }
+  
+  // Tag paths: /tag/sip
+  if (segments[0] === 'tag' && segments[1]) {
+    return { view: 'blog', params: { tag: segments[1] } };
+  }
+  
+  // Author paths: /author/sarah-jenkins
+  if (segments[0] === 'author' && segments[1]) {
+    return { view: 'blog', params: { author: segments[1] } };
+  }
+  
+  // Static Pages
+  if (normPath === '/about') {
+    return { view: 'about-us', params: null };
+  }
+  if (normPath === '/contact') {
+    return { view: 'contact-us', params: null };
+  }
+  if (normPath === '/privacy-policy') {
+    return { view: 'privacy-policy', params: null };
+  }
+  if (normPath === '/terms-and-conditions' || normPath === '/terms-conditions') {
+    return { view: 'terms-conditions', params: null };
+  }
+  if (normPath === '/disclaimer') {
+    return { view: 'disclaimer', params: null };
+  }
+  if (normPath === '/cookie-policy') {
+    return { view: 'cookie-policy', params: null };
+  }
+  if (normPath === '/editorial-policy') {
+    return { view: 'editorial-policy', params: null };
+  }
+  if (normPath === '/refund-policy') {
+    return { view: 'refund-policy', params: null };
+  }
+  if (normPath === '/sitemap') {
+    return { view: 'sitemap', params: null };
+  }
+  if (normPath === '/dashboard') {
+    return { view: 'dashboard', params: null };
+  }
+  if (normPath === '/search') {
+    return { view: 'search', params: { query: params.get('q') || '' } };
+  }
+  if (normPath === '/calculators-all' || normPath === '/all-calculators') {
+    return { view: 'calculators-all', params: null };
+  }
+  
+  // Virtual SEO file paths (handled on the client side)
+  if (normPath === '/robots.txt') {
+    return { view: 'virtual-robots', params: null };
+  }
+  if (normPath === '/sitemap.xml') {
+    return { view: 'virtual-sitemap', params: null };
+  }
+
+  // Calculator custom pages: /emi-calculator, /sip-calculator, etc.
+  const calcId = segments[0];
+  const isCalc = calculators.some(c => c.id === calcId);
+  if (isCalc) {
+    return { view: `calculator-${calcId}`, params: { id: calcId } };
+  }
+  
+  // Default fallback
+  return { view: 'home', params: null };
+}
 
 export default function App() {
   const [currentView, setCurrentView] = useState('home');
   const [viewParams, setViewParams] = useState<any>(null);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
-  // Handle URL hash-based routing initially and on popstate
+  // Handle URL pathname routing initially, including redirection of legacy hash links
   useEffect(() => {
-    const handleHashRouting = () => {
-      const hash = window.location.hash;
-      if (!hash) {
-        setCurrentView('home');
-        setViewParams(null);
-        return;
-      }
+    // 1. Process 301 client-side redirects for old hash-based links to keep link-equity (SEO value)
+    const hash = window.location.hash;
+    let redirectPath: string | null = null;
 
-      // Check simple views
+    if (hash) {
       if (hash === '#home') {
-        setCurrentView('home');
+        redirectPath = '/';
       } else if (hash === '#calculators-all') {
-        setCurrentView('calculators-all');
+        redirectPath = '/calculators-all';
       } else if (hash === '#blog') {
-        setCurrentView('blog');
+        redirectPath = '/blog';
       } else if (hash === '#dashboard') {
-        setCurrentView('dashboard');
+        redirectPath = '/dashboard';
       } else if (hash === '#about-us') {
-        setCurrentView('about-us');
+        redirectPath = '/about';
       } else if (hash === '#contact-us') {
-        setCurrentView('contact-us');
+        redirectPath = '/contact';
       } else if (hash === '#privacy-policy') {
-        setCurrentView('privacy-policy');
+        redirectPath = '/privacy-policy';
       } else if (hash === '#terms-conditions') {
-        setCurrentView('terms-conditions');
+        redirectPath = '/terms-and-conditions';
       } else if (hash === '#disclaimer') {
-        setCurrentView('disclaimer');
+        redirectPath = '/disclaimer';
       } else if (hash === '#cookie-policy') {
-        setCurrentView('cookie-policy');
+        redirectPath = '/cookie-policy';
       } else if (hash === '#refund-policy') {
-        setCurrentView('refund-policy');
+        redirectPath = '/refund-policy';
       } else if (hash === '#editorial-policy') {
-        setCurrentView('editorial-policy');
+        redirectPath = '/editorial-policy';
       } else if (hash.startsWith('#calculator-')) {
         const id = hash.replace('#calculator-', '');
-        setCurrentView(`calculator-${id}`);
-        setViewParams({ id });
+        redirectPath = `/${id}`;
       } else if (hash.startsWith('#blog-')) {
         const slug = hash.replace('#blog-', '');
-        setCurrentView(`blog-${slug}`);
-        setViewParams({ slug });
+        redirectPath = `/blog/${slug}`;
       }
+    }
+
+    // 2. Process normalize canonical paths (e.g. uppercase /SIP-Calculator -> /sip-calculator, duplicate slashes)
+    const currentPath = window.location.pathname;
+    const normalized = normalizeUrl(currentPath);
+    
+    if (redirectPath) {
+      // Clear hash and execute modern push replacement (301 redirect parity)
+      window.history.replaceState(null, '', redirectPath);
+    } else if (currentPath !== normalized && currentPath !== '/sitemap.xml' && currentPath !== '/robots.txt') {
+      window.history.replaceState(null, '', normalized);
+    }
+
+    // Parse final correct pathname
+    const finalRoute = parseLocation(window.location.pathname, window.location.search);
+    setCurrentView(finalRoute.view);
+    setViewParams(finalRoute.params);
+
+    // Sync with state history pops
+    const handlePopState = () => {
+      const popped = parseLocation(window.location.pathname, window.location.search);
+      setCurrentView(popped.view);
+      setViewParams(popped.params);
     };
 
-    handleHashRouting();
-    window.addEventListener('hashchange', handleHashRouting);
-    return () => window.removeEventListener('hashchange', handleHashRouting);
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   // Sync dark mode class on HTML document tag
@@ -77,60 +202,68 @@ export default function App() {
         document.documentElement.classList.remove('dark');
       }
     } else {
-      // Default to light
       document.documentElement.classList.remove('dark');
     }
   }, []);
 
-  const handleToggleTheme = () => {
-    const nextTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(nextTheme);
-    localStorage.setItem('fh_theme', nextTheme);
-    if (nextTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  };
-
-  // Central routing navigator
+  // Central routing navigator (updating browser pathname dynamically)
   const handleNavigate = (view: string, params?: any) => {
-    // Set view
     setCurrentView(view);
     setViewParams(params);
 
-    // Update window hash for bookmarkable routing support
+    let newPath = '/';
+    let searchString = '';
+
     if (view === 'home') {
-      window.location.hash = 'home';
+      newPath = '/';
     } else if (view === 'calculators-all') {
-      window.location.hash = 'calculators-all';
+      newPath = '/calculators-all';
     } else if (view === 'blog') {
-      window.location.hash = 'blog';
+      if (params?.category) {
+        newPath = `/category/${params.category}`;
+        if (params?.page > 1) newPath += `/page/${params.page}`;
+      } else if (params?.tag) {
+        newPath = `/tag/${params.tag}`;
+      } else if (params?.author) {
+        newPath = `/author/${params.author}`;
+      } else if (params?.page > 1) {
+        newPath = `/blog/page/${params.page}`;
+      } else {
+        newPath = '/blog';
+      }
     } else if (view === 'dashboard') {
-      window.location.hash = 'dashboard';
+      newPath = '/dashboard';
     } else if (view === 'about-us') {
-      window.location.hash = 'about-us';
+      newPath = '/about';
     } else if (view === 'contact-us') {
-      window.location.hash = 'contact-us';
+      newPath = '/contact';
     } else if (view === 'privacy-policy') {
-      window.location.hash = 'privacy-policy';
+      newPath = '/privacy-policy';
     } else if (view === 'terms-conditions') {
-      window.location.hash = 'terms-conditions';
+      newPath = '/terms-and-conditions';
     } else if (view === 'disclaimer') {
-      window.location.hash = 'disclaimer';
+      newPath = '/disclaimer';
     } else if (view === 'cookie-policy') {
-      window.location.hash = 'cookie-policy';
+      newPath = '/cookie-policy';
     } else if (view === 'refund-policy') {
-      window.location.hash = 'refund-policy';
+      newPath = '/refund-policy';
     } else if (view === 'editorial-policy') {
-      window.location.hash = 'editorial-policy';
+      newPath = '/editorial-policy';
+    } else if (view === 'sitemap') {
+      newPath = '/sitemap';
+    } else if (view === 'search') {
+      newPath = '/search';
+      if (params?.query) searchString = `?q=${encodeURIComponent(params.query)}`;
     } else if (view.startsWith('calculator-')) {
       const id = params?.id || view.replace('calculator-', '');
-      window.location.hash = `calculator-${id}`;
+      newPath = `/${id}`;
     } else if (view.startsWith('blog-')) {
       const slug = params?.slug || view.replace('blog-', '');
-      window.location.hash = `blog-${slug}`;
+      newPath = `/blog/${slug}`;
     }
+
+    // Push new state to HTML5 History API
+    window.history.pushState(null, '', `${newPath}${searchString}`);
 
     // Scroll back to top smoothly on route change to make navigation premium
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -145,7 +278,7 @@ export default function App() {
       return <CalculatorsAll onNavigate={handleNavigate} />;
     }
     if (currentView === 'blog') {
-      return <BlogPage onNavigate={handleNavigate} />;
+      return <BlogPage onNavigate={handleNavigate} viewParams={viewParams} />;
     }
     if (currentView === 'dashboard') {
       return <Dashboard onNavigate={handleNavigate} />;
@@ -174,6 +307,12 @@ export default function App() {
     if (currentView === 'editorial-policy') {
       return <LegalPages type="editorial" />;
     }
+    if (currentView === 'sitemap') {
+      return <CalculatorsAll onNavigate={handleNavigate} />;
+    }
+    if (currentView === 'search') {
+      return <CalculatorsAll onNavigate={handleNavigate} initialSearch={viewParams?.query} />;
+    }
     if (currentView.startsWith('calculator-')) {
       const id = viewParams?.id || currentView.replace('calculator-', '');
       return <CalculatorPage id={id} initialInputs={viewParams?.inputs} onNavigate={handleNavigate} />;
@@ -183,13 +322,33 @@ export default function App() {
       return <BlogPostPage slug={slug} onNavigate={handleNavigate} />;
     }
 
-    // Default Fallback
     return <Home onNavigate={handleNavigate} />;
   };
+
+  // 1. Virtual robots.txt and sitemap.xml rendering bypass (pure unstyled plaintext for bots/crawlers)
+  if (currentView === 'virtual-robots' || currentView === 'virtual-sitemap') {
+    return (
+      <pre style={{ margin: 0, padding: '24px', fontFamily: 'monospace', fontSize: '12px', whiteSpace: 'pre-wrap', wordBreak: 'break-all', backgroundColor: '#090D16', color: '#CBD5E1' }}>
+        {currentView === 'virtual-robots' ? generateRobotsTxt() : generateSitemapXml()}
+      </pre>
+    );
+  }
+
+  // Calculate dynamic SEO properties based on current path
+  const seoData = getSeoMetadata(window.location.pathname, new URLSearchParams(window.location.search));
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FAFC] dark:bg-[#090D16] text-slate-800 dark:text-slate-100 transition-colors duration-200">
       
+      {/* Centralized dynamic high-authority SEO configuration */}
+      <SEO
+        title={seoData.title}
+        description={seoData.description}
+        canonicalUrl={seoData.canonicalUrl}
+        breadcrumbs={seoData.breadcrumbs}
+        schema={seoData.schema}
+      />
+
       {/* Sticky navigation and search panel header */}
       <Header
         currentView={currentView}

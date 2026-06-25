@@ -6,10 +6,11 @@ import AdPlaceholder from '../components/AdPlaceholder';
 
 interface CalculatorsAllProps {
   onNavigate: (view: string, params?: any) => void;
+  initialSearch?: string;
 }
 
-export default function CalculatorsAll({ onNavigate }: CalculatorsAllProps) {
-  const [query, setQuery] = useState('');
+export default function CalculatorsAll({ onNavigate, initialSearch = '' }: CalculatorsAllProps) {
+  const [query, setQuery] = useState(initialSearch);
 
   const sectors = [
     { id: 'loan', label: 'Loan Calculators', icon: <Landmark className="w-4 h-4 text-blue-500" /> },

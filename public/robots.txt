@@ -1,0 +1,18 @@
+# Robots.txt - Calcfino.com SEO Directory
+User-agent: *
+Allow: /
+Allow: /blog
+Allow: /category
+Allow: /tag
+Allow: /author
+Allow: /*-calculator
+
+# Block private, temporary, search results and administrative routes
+Disallow: /admin
+Disallow: /login
+Disallow: /temp
+Disallow: /search
+Disallow: /dashboard
+Disallow: /api/
+
+Sitemap: https://calcfino.com/sitemap.xml
