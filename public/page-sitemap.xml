@@ -25,13 +25,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neelbyte.in/disclaimer</loc>
+    <loc>https://neelbyte.in/terms-and-conditions</loc>
     <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neelbyte.in/terms-and-conditions</loc>
+    <loc>https://neelbyte.in/disclaimer</loc>
     <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -62,12 +62,6 @@
   </url>
   <url>
     <loc>https://neelbyte.in/calculators-all</loc>
-    <lastmod>2026-06-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neelbyte.in/blog</loc>
     <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

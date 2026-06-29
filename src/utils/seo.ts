@@ -405,33 +405,25 @@ export function getSeoMetadata(pathname: string, searchParams?: URLSearchParams)
  * Returns dynamic Robots.txt content adhering to requested structure
  */
 export function generateRobotsTxt(): string {
-  return `User-agent: *
-
+  return `# Robots.txt - Calcfino.com SEO Directory
+User-agent: *
 Allow: /
+Allow: /blog
+Allow: /category
+Allow: /tag
+Allow: /author
+Allow: /*-calculator
 
-Disallow: /admin/
-Disallow: /login/
+# Block private, temporary, search results and administrative routes
+Disallow: /admin
+Disallow: /login
+Disallow: /temp
 Disallow: /search
+Disallow: /dashboard
 Disallow: /api/
-Disallow: /preview/
-Disallow: /tmp/
-Disallow: /*?replytocom
-Disallow: /*?utm_
-Disallow: /*?sort=
-Disallow: /*?filter=
 
 Sitemap: ${DOMAIN}/sitemap_index.xml
 `;
-}
-
-function escapeXml(unsafe: string): string {
-  if (!unsafe) return '';
-  return unsafe
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&apos;');
 }
 
 /**
@@ -450,6 +442,10 @@ export function generateSitemapIndexXml(): string {
     <lastmod>${nowStr}</lastmod>
   </sitemap>
   <sitemap>
+    <loc>${DOMAIN}/sitemap_blog.xml</loc>
+    <lastmod>${nowStr}</lastmod>
+  </sitemap>
+  <sitemap>
     <loc>${DOMAIN}/post-sitemap.xml</loc>
     <lastmod>${nowStr}</lastmod>
   </sitemap>
@@ -457,179 +453,29 @@ export function generateSitemapIndexXml(): string {
     <loc>${DOMAIN}/category-sitemap.xml</loc>
     <lastmod>${nowStr}</lastmod>
   </sitemap>
-  <sitemap>
-    <loc>${DOMAIN}/tag-sitemap.xml</loc>
-    <lastmod>${nowStr}</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>${DOMAIN}/author-sitemap.xml</loc>
-    <lastmod>${nowStr}</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>${DOMAIN}/image-sitemap.xml</loc>
-    <lastmod>${nowStr}</lastmod>
-  </sitemap>
 </sitemapindex>`;
 }
 
 /**
- * Generates valid SEO XML Image Sitemap containing Logo, Calculator Images/Icons, Blog post images, Featured images, and Illustrations
- */
-export function generateImageSitemapXml(): string {
-  const nowStr = new Date().toISOString().split('T')[0];
-  let xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">`;
-
-  // Filter only published posts (exclude draft, private, deleted)
-  const publishedPosts = blogPosts.filter(post => {
-    if (post.status && post.status !== 'published') return false;
-    if (post.draft === true) return false;
-    if (post.private === true) return false;
-    if (post.deleted === true) return false;
-    return true;
-  });
-
-  // 1. Homepage URL (with Logo and Hero Illustration / Financial Graphics)
-  xml += `
-  <url>
-    <loc>${DOMAIN}/</loc>
-    <lastmod>${nowStr}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-    <image:image>
-      <image:loc>${DOMAIN}/logo.png</image:loc>
-      <image:title>Calcfino Financial Calculator Logo</image:title>
-      <image:caption>Calcfino brand logo featuring a modern finance wallet concept.</image:caption>
-    </image:image>
-    <image:image>
-      <image:loc>${DOMAIN}/images/hero-illustration.png</image:loc>
-      <image:title>Calcfino Wealth Planner Hero Illustration</image:title>
-      <image:caption>Sleek, responsive hero illustration guiding users on interactive wealth calculation.</image:caption>
-    </image:image>
-    <image:image>
-      <image:loc>${DOMAIN}/images/financial-growth.png</image:loc>
-      <image:title>Interactive Compounding Growth Illustration</image:title>
-      <image:caption>Bento grid compound calculator illustration for dynamic SIP growth charts.</image:caption>
-    </image:image>
-  </url>`;
-
-  // 2. Calculators Hub (with Category Images and Icons / Illustrations)
-  xml += `
-  <url>
-    <loc>${DOMAIN}/calculators-all</loc>
-    <lastmod>${nowStr}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>${DOMAIN}/images/categories/loan.png</image:loc>
-      <image:title>Loan Calculator Hub Icon</image:title>
-      <image:caption>Vector illustration for auto, personal, and mortgage loan repayment solver tools.</image:caption>
-    </image:image>
-    <image:image>
-      <image:loc>${DOMAIN}/images/categories/investment.png</image:loc>
-      <image:title>Investment Calculator Hub Icon</image:title>
-      <image:caption>Vector illustration representing compound interest, SWP, and mutual fund calculators.</image:caption>
-    </image:image>
-    <image:image>
-      <image:loc>${DOMAIN}/images/categories/tax.png</image:loc>
-      <image:title>Tax Savings Calculator Hub Icon</image:title>
-      <image:caption>Vector illustration representing progressive income tax and capital gains calculators.</image:caption>
-    </image:image>
-  </url>`;
-
-  // 3. For each individual Calculator page
-  calculators.forEach(calc => {
-    xml += `
-  <url>
-    <loc>${DOMAIN}/${calc.id}</loc>
-    <lastmod>${nowStr}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-    <image:image>
-      <image:loc>${DOMAIN}/images/calculators/${calc.id}.png</image:loc>
-      <image:title>${escapeXml(calc.name)} Illustration</image:title>
-      <image:caption>Interactive design visualization for the ${escapeXml(calc.name)} utility.</image:caption>
-    </image:image>
-  </url>`;
-  });
-
-  // 4. Blog Hub
-  xml += `
-  <url>
-    <loc>${DOMAIN}/blog</loc>
-    <lastmod>${nowStr}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>Calcfino Insights Featured Banner</image:title>
-      <image:caption>Featured banner illustrating smart spending, ratio budgets, and modern financial wisdom.</image:caption>
-    </image:image>
-  </url>`;
-
-  // 5. Blog Posts (with post images and author avatars)
-  publishedPosts.forEach(post => {
-    xml += `
-  <url>
-    <loc>${DOMAIN}/blog/${post.slug}</loc>
-    <lastmod>${nowStr}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>${escapeXml(post.imageUrl)}</image:loc>
-      <image:title>${escapeXml(post.title)}</image:title>
-      <image:caption>${escapeXml(post.excerpt)}</image:caption>
-    </image:image>`;
-    
-    if (post.author && post.author.avatarUrl) {
-      xml += `
-    <image:image>
-      <image:loc>${escapeXml(post.author.avatarUrl)}</image:loc>
-      <image:title>Author: ${escapeXml(post.author.name)}</image:title>
-      <image:caption>Profile avatar for ${escapeXml(post.author.name)}, ${escapeXml(post.author.role)}.</image:caption>
-    </image:image>`;
-    }
-    
-    xml += `
-  </url>`;
-  });
-
-  xml += `\n</urlset>`;
-  return xml;
-}
-
-/**
- * Generates valid SEO XML Sitemap containing categories (category-sitemap.xml) and pagination pages
+ * Generates valid SEO XML Sitemap containing categories (category-sitemap.xml)
  */
 export function generateCategorySitemapXml(): string {
   const nowStr = new Date().toISOString().split('T')[0];
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 
-  // Filter published posts
-  const publishedPosts = blogPosts.filter(post => {
-    if (post.status && post.status !== 'published') return false;
-    if (post.draft === true) return false;
-    if (post.private === true) return false;
-    if (post.deleted === true) return false;
-    return true;
-  });
-
+  // Predefined and dynamic categories
   const predefinedCategories = [
     'Loan', 'Investment', 'Tax', 'Business', 'Retirement', 'Insurance', 
     'Personal Finance', 'Cryptocurrency', 'Savings', 'Salary', 'Real Estate'
   ];
   
-  const dynamicCategories = publishedPosts.map(p => p.category);
+  const dynamicCategories = blogPosts.map(p => p.category);
   const allCategoriesSet = new Set([...predefinedCategories, ...dynamicCategories]);
   const sortedCategories = Array.from(allCategoriesSet).sort();
 
   sortedCategories.forEach(cat => {
     const catSlug = cat.toLowerCase().replace(/\s+/g, '-');
-    const catPosts = publishedPosts.filter(p => p.category.toLowerCase().replace(/\s+/g, '-') === catSlug);
-    
-    // Page 1 Index
     xml += `
   <url>
     <loc>${DOMAIN}/category/${catSlug}</loc>
@@ -637,18 +483,6 @@ export function generateCategorySitemapXml(): string {
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>`;
-
-    // Paginated Pages (6 posts per page)
-    const totalCatPages = Math.ceil(catPosts.length / 6);
-    for (let page = 2; page <= totalCatPages; page++) {
-      xml += `
-  <url>
-    <loc>${DOMAIN}/category/${catSlug}/page/${page}</loc>
-    <lastmod>${nowStr}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>`;
-    }
   });
 
   xml += `\n</urlset>`;
@@ -681,8 +515,8 @@ export function generatePostSitemapXml(): string {
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>${escapeXml(post.imageUrl)}</image:loc>
-      <image:title>${escapeXml(post.title)}</image:title>
+      <image:loc>${post.imageUrl}</image:loc>
+      <image:title>${post.title.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}</image:title>
     </image:image>
   </url>`;
   });
@@ -692,106 +526,7 @@ export function generatePostSitemapXml(): string {
 }
 
 /**
- * Generates valid SEO XML Sitemap containing tags (tag-sitemap.xml) and tag pagination
- */
-export function generateTagSitemapXml(): string {
-  const nowStr = new Date().toISOString().split('T')[0];
-  let xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
-
-  // Filter published posts
-  const publishedPosts = blogPosts.filter(post => {
-    if (post.status && post.status !== 'published') return false;
-    if (post.draft === true) return false;
-    if (post.private === true) return false;
-    if (post.deleted === true) return false;
-    return true;
-  });
-
-  const allTags = Array.from(new Set(publishedPosts.flatMap(p => p.tags))).sort();
-
-  allTags.forEach(tag => {
-    const tagSlug = tag.toLowerCase().replace(/\s+/g, '-');
-    const tagPosts = publishedPosts.filter(p => p.tags.some(t => t.toLowerCase().replace(/\s+/g, '-') === tagSlug));
-    
-    // Page 1 Index
-    xml += `
-  <url>
-    <loc>${DOMAIN}/tag/${tagSlug}</loc>
-    <lastmod>${nowStr}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>`;
-
-    // Paginated Pages
-    const totalTagPages = Math.ceil(tagPosts.length / 6);
-    for (let page = 2; page <= totalTagPages; page++) {
-      xml += `
-  <url>
-    <loc>${DOMAIN}/tag/${tagSlug}/page/${page}</loc>
-    <lastmod>${nowStr}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>`;
-    }
-  });
-
-  xml += `\n</urlset>`;
-  return xml;
-}
-
-/**
- * Generates valid SEO XML Sitemap containing authors (author-sitemap.xml) and author pagination
- */
-export function generateAuthorSitemapXml(): string {
-  const nowStr = new Date().toISOString().split('T')[0];
-  let xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
-
-  // Filter published posts
-  const publishedPosts = blogPosts.filter(post => {
-    if (post.status && post.status !== 'published') return false;
-    if (post.draft === true) return false;
-    if (post.private === true) return false;
-    if (post.deleted === true) return false;
-    return true;
-  });
-
-  const authorNamesSet = new Set(publishedPosts.map(p => p.author.name));
-  const sortedAuthors = Array.from(authorNamesSet).sort();
-
-  sortedAuthors.forEach(authorName => {
-    const authorSlug = authorName.toLowerCase().replace(/\s+/g, '-');
-    const authorPosts = publishedPosts.filter(p => p.author.name.toLowerCase().replace(/\s+/g, '-') === authorSlug);
-    
-    // Page 1 Index
-    xml += `
-  <url>
-    <loc>${DOMAIN}/author/${authorSlug}</loc>
-    <lastmod>${nowStr}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>`;
-
-    // Paginated Pages
-    const totalAuthorPages = Math.ceil(authorPosts.length / 6);
-    for (let page = 2; page <= totalAuthorPages; page++) {
-      xml += `
-  <url>
-    <loc>${DOMAIN}/author/${authorSlug}/page/${page}</loc>
-    <lastmod>${nowStr}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>`;
-    }
-  });
-
-  xml += `\n</urlset>`;
-  return xml;
-}
-
-/**
- * Generates valid SEO XML Sitemap containing only static/informational pages (page-sitemap.xml) and main blog paginated pages
+ * Generates valid SEO XML Sitemap containing only static/informational pages (page-sitemap.xml)
  */
 export function generatePageSitemapXml(): string {
   const nowStr = new Date().toISOString().split('T')[0];
@@ -818,8 +553,7 @@ export function generatePageSitemapXml(): string {
     'editorial-policy', 
     'refund-policy', 
     'sitemap',
-    'calculators-all',
-    'blog'
+    'calculators-all'
   ];
   
   staticPages.forEach(p => {
@@ -831,27 +565,6 @@ export function generatePageSitemapXml(): string {
     <priority>0.8</priority>
   </url>`;
   });
-
-  // Filter published posts
-  const publishedPosts = blogPosts.filter(post => {
-    if (post.status && post.status !== 'published') return false;
-    if (post.draft === true) return false;
-    if (post.private === true) return false;
-    if (post.deleted === true) return false;
-    return true;
-  });
-
-  // Dynamic pagination for /blog/page/:num (starting from page 2)
-  const totalBlogPages = Math.ceil(publishedPosts.length / 6);
-  for (let page = 2; page <= totalBlogPages; page++) {
-    xml += `
-  <url>
-    <loc>${DOMAIN}/blog/page/${page}</loc>
-    <lastmod>${nowStr}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>`;
-  }
 
   xml += `\n</urlset>`;
   return xml;
@@ -889,22 +602,12 @@ export function generateSitemapCalculatorsXml(): string {
 
 /**
  * Generates valid SEO XML Sitemap containing blog indices, tags, categories, and articles with images
- * Kept for backwards compatibility but we promote modular sitemaps
  */
 export function generateSitemapBlogXml(): string {
   const nowStr = new Date().toISOString().split('T')[0];
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">`;
-
-  // Filter published posts
-  const publishedPosts = blogPosts.filter(post => {
-    if (post.status && post.status !== 'published') return false;
-    if (post.draft === true) return false;
-    if (post.private === true) return false;
-    if (post.deleted === true) return false;
-    return true;
-  });
 
   // 1. Blog Hub
   xml += `
@@ -916,7 +619,7 @@ export function generateSitemapBlogXml(): string {
   </url>`;
 
   // 2. Blog Posts with Image schema
-  publishedPosts.forEach(post => {
+  blogPosts.forEach(post => {
     xml += `
   <url>
     <loc>${DOMAIN}/blog/${post.slug}</loc>
@@ -924,14 +627,14 @@ export function generateSitemapBlogXml(): string {
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>${escapeXml(post.imageUrl)}</image:loc>
-      <image:title>${escapeXml(post.title)}</image:title>
+      <image:loc>${post.imageUrl}</image:loc>
+      <image:title>${post.title.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}</image:title>
     </image:image>
   </url>`;
   });
 
   // 3. Categories
-  const categories = Array.from(new Set(publishedPosts.map(p => p.category)));
+  const categories = Array.from(new Set(blogPosts.map(p => p.category)));
   categories.forEach(cat => {
     const catSlug = cat.toLowerCase().replace(/\s+/g, '-');
     xml += `
@@ -944,7 +647,7 @@ export function generateSitemapBlogXml(): string {
   });
 
   // 4. Tags
-  const tags = Array.from(new Set(publishedPosts.flatMap(p => p.tags)));
+  const tags = Array.from(new Set(blogPosts.flatMap(p => p.tags)));
   tags.forEach(t => {
     const tagSlug = t.toLowerCase().replace(/\s+/g, '-');
     xml += `
@@ -1014,7 +717,7 @@ export function generateSitemapXml(): string {
   </url>`;
   });
 
-  // 5. Blog Hub and pagination
+  // 5. Blog Hub
   xml += `
   <url>
     <loc>${DOMAIN}/blog</loc>
@@ -1023,28 +726,8 @@ export function generateSitemapXml(): string {
     <priority>0.8</priority>
   </url>`;
 
-  // Filter published posts
-  const publishedPosts = blogPosts.filter(post => {
-    if (post.status && post.status !== 'published') return false;
-    if (post.draft === true) return false;
-    if (post.private === true) return false;
-    if (post.deleted === true) return false;
-    return true;
-  });
-
-  const totalBlogPages = Math.ceil(publishedPosts.length / 6);
-  for (let page = 2; page <= totalBlogPages; page++) {
-    xml += `
-  <url>
-    <loc>${DOMAIN}/blog/page/${page}</loc>
-    <lastmod>${nowStr}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>`;
-  }
-
   // 6. Individual Blog Posts (Dynamically listed with image schemas)
-  publishedPosts.forEach(post => {
+  blogPosts.forEach(post => {
     xml += `
   <url>
     <loc>${DOMAIN}/blog/${post.slug}</loc>
@@ -1052,25 +735,16 @@ export function generateSitemapXml(): string {
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>${escapeXml(post.imageUrl)}</image:loc>
-      <image:title>${escapeXml(post.title)}</image:title>
+      <image:loc>${post.imageUrl}</image:loc>
+      <image:title>${post.title.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}</image:title>
     </image:image>
   </url>`;
   });
 
-  // 7. Categories and category pagination
-  const predefinedCategories = [
-    'Loan', 'Investment', 'Tax', 'Business', 'Retirement', 'Insurance', 
-    'Personal Finance', 'Cryptocurrency', 'Savings', 'Salary', 'Real Estate'
-  ];
-  const dynamicCategories = publishedPosts.map(p => p.category);
-  const allCategoriesSet = new Set([...predefinedCategories, ...dynamicCategories]);
-  const sortedCategories = Array.from(allCategoriesSet).sort();
-
-  sortedCategories.forEach(cat => {
+  // 7. Categories
+  const categories = Array.from(new Set(blogPosts.map(p => p.category)));
+  categories.forEach(cat => {
     const catSlug = cat.toLowerCase().replace(/\s+/g, '-');
-    const catPosts = publishedPosts.filter(p => p.category.toLowerCase().replace(/\s+/g, '-') === catSlug);
-    
     xml += `
   <url>
     <loc>${DOMAIN}/category/${catSlug}</loc>
@@ -1078,25 +752,12 @@ export function generateSitemapXml(): string {
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>`;
-
-    const totalCatPages = Math.ceil(catPosts.length / 6);
-    for (let page = 2; page <= totalCatPages; page++) {
-      xml += `
-  <url>
-    <loc>${DOMAIN}/category/${catSlug}/page/${page}</loc>
-    <lastmod>${nowStr}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>`;
-    }
   });
 
-  // 8. Tags and tag pagination
-  const tags = Array.from(new Set(publishedPosts.flatMap(p => p.tags))).sort();
+  // 8. Tags
+  const tags = Array.from(new Set(blogPosts.flatMap(p => p.tags)));
   tags.forEach(t => {
     const tagSlug = t.toLowerCase().replace(/\s+/g, '-');
-    const tagPosts = publishedPosts.filter(p => p.tags.some(ts => ts.toLowerCase().replace(/\s+/g, '-') === tagSlug));
-    
     xml += `
   <url>
     <loc>${DOMAIN}/tag/${tagSlug}</loc>
@@ -1104,47 +765,8 @@ export function generateSitemapXml(): string {
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>`;
-
-    const totalTagPages = Math.ceil(tagPosts.length / 6);
-    for (let page = 2; page <= totalTagPages; page++) {
-      xml += `
-  <url>
-    <loc>${DOMAIN}/tag/${tagSlug}/page/${page}</loc>
-    <lastmod>${nowStr}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.3</priority>
-  </url>`;
-    }
-  });
-
-  // 9. Authors and author pagination
-  const authorNamesSet = new Set(publishedPosts.map(p => p.author.name));
-  const sortedAuthors = Array.from(authorNamesSet).sort();
-  sortedAuthors.forEach(authorName => {
-    const authorSlug = authorName.toLowerCase().replace(/\s+/g, '-');
-    const authorPosts = publishedPosts.filter(p => p.author.name.toLowerCase().replace(/\s+/g, '-') === authorSlug);
-    
-    xml += `
-  <url>
-    <loc>${DOMAIN}/author/${authorSlug}</loc>
-    <lastmod>${nowStr}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>`;
-
-    const totalAuthorPages = Math.ceil(authorPosts.length / 6);
-    for (let page = 2; page <= totalAuthorPages; page++) {
-      xml += `
-  <url>
-    <loc>${DOMAIN}/author/${authorSlug}/page/${page}</loc>
-    <lastmod>${nowStr}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.3</priority>
-  </url>`;
-    }
   });
 
   xml += `\n</urlset>`;
   return xml;
 }
-

@@ -7,8 +7,8 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>Mastering the 50/30/20 Rule: A Practical Guide to Smarter Spending</image:title>
+      <image:loc>https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&amp;auto=format&amp;fit=crop&amp;q=60</image:loc>
+      <image:title>Mastering the 50/30/20 Budgeting Rule</image:title>
     </image:image>
   </url>
   <url>
@@ -17,8 +17,8 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>The Magic of Compounding: How SIP Mutual Funds Grow Exponential Wealth</image:title>
+      <image:loc>https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&amp;auto=format&amp;fit=crop&amp;q=60</image:loc>
+      <image:title>The Magic of Compounding: How Systematic Investment Plans (SIP) Build Wealth</image:title>
     </image:image>
   </url>
   <url>
@@ -27,8 +27,8 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1554224154-26032ffc0d07?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>Navigating Capital Gains Tax: Legally Shielding Your Portfolio Growth</image:title>
+      <image:loc>https://images.unsplash.com/photo-1450133064473-71024230f91b?w=800&amp;auto=format&amp;fit=crop&amp;q=60</image:loc>
+      <image:title>Navigating the Capital Gains Tax Maze: Strategies to Minimize Liability</image:title>
     </image:image>
   </url>
 </urlset>

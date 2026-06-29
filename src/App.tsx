@@ -21,11 +21,8 @@ import {
   generatePageSitemapXml,
   generatePostSitemapXml,
   generateCategorySitemapXml,
-  generateImageSitemapXml,
   generateSitemapCalculatorsXml,
-  generateSitemapBlogXml,
-  generateTagSitemapXml,
-  generateAuthorSitemapXml
+  generateSitemapBlogXml
 } from './utils/seo';
 
 /**
@@ -129,15 +126,6 @@ function parseLocation(pathname: string, search: string) {
   if (normPath === '/category-sitemap.xml') {
     return { view: 'virtual-category-sitemap', params: null };
   }
-  if (normPath === '/tag-sitemap.xml') {
-    return { view: 'virtual-tag-sitemap', params: null };
-  }
-  if (normPath === '/author-sitemap.xml') {
-    return { view: 'virtual-author-sitemap', params: null };
-  }
-  if (normPath === '/image-sitemap.xml') {
-    return { view: 'virtual-image-sitemap', params: null };
-  }
   if (normPath === '/sitemap_calculators.xml') {
     return { view: 'virtual-sitemap-calculators', params: null };
   }
@@ -208,7 +196,7 @@ export default function App() {
     if (redirectPath) {
       // Clear hash and execute modern push replacement (301 redirect parity)
       window.history.replaceState(null, '', redirectPath);
-    } else if (currentPath !== normalized && !['/sitemap.xml', '/robots.txt', '/sitemap_index.xml', '/sitemap_pages.xml', '/page-sitemap.xml', '/post-sitemap.xml', '/category-sitemap.xml', '/tag-sitemap.xml', '/author-sitemap.xml', '/image-sitemap.xml', '/sitemap_calculators.xml', '/sitemap_blog.xml'].includes(currentPath)) {
+    } else if (currentPath !== normalized && !['/sitemap.xml', '/robots.txt', '/sitemap_index.xml', '/sitemap_pages.xml', '/page-sitemap.xml', '/post-sitemap.xml', '/category-sitemap.xml', '/sitemap_calculators.xml', '/sitemap_blog.xml'].includes(currentPath)) {
       window.history.replaceState(null, '', normalized);
     }
 
@@ -371,9 +359,6 @@ export default function App() {
     currentView === 'virtual-page-sitemap' ||
     currentView === 'virtual-post-sitemap' ||
     currentView === 'virtual-category-sitemap' ||
-    currentView === 'virtual-tag-sitemap' ||
-    currentView === 'virtual-author-sitemap' ||
-    currentView === 'virtual-image-sitemap' ||
     currentView === 'virtual-sitemap-calculators' ||
     currentView === 'virtual-sitemap-blog'
   ) {
@@ -384,9 +369,6 @@ export default function App() {
     else if (currentView === 'virtual-sitemap-pages' || currentView === 'virtual-page-sitemap') content = generatePageSitemapXml();
     else if (currentView === 'virtual-post-sitemap') content = generatePostSitemapXml();
     else if (currentView === 'virtual-category-sitemap') content = generateCategorySitemapXml();
-    else if (currentView === 'virtual-tag-sitemap') content = generateTagSitemapXml();
-    else if (currentView === 'virtual-author-sitemap') content = generateAuthorSitemapXml();
-    else if (currentView === 'virtual-image-sitemap') content = generateImageSitemapXml();
     else if (currentView === 'virtual-sitemap-calculators') content = generateSitemapCalculatorsXml();
     else if (currentView === 'virtual-sitemap-blog') content = generateSitemapBlogXml();
 

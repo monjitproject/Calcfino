@@ -1,16 +1,18 @@
+# Robots.txt - Calcfino.com SEO Directory
 User-agent: *
-
 Allow: /
+Allow: /blog
+Allow: /category
+Allow: /tag
+Allow: /author
+Allow: /*-calculator
 
-Disallow: /admin/
-Disallow: /login/
+# Block private, temporary, search results and administrative routes
+Disallow: /admin
+Disallow: /login
+Disallow: /temp
 Disallow: /search
+Disallow: /dashboard
 Disallow: /api/
-Disallow: /preview/
-Disallow: /tmp/
-Disallow: /*?replytocom
-Disallow: /*?utm_
-Disallow: /*?sort=
-Disallow: /*?filter=
 
 Sitemap: https://neelbyte.in/sitemap_index.xml
