@@ -73,6 +73,10 @@ export interface BlogPost {
   publishedAt: string;
   readTime: string;
   imageUrl: string;
+  status?: 'published' | 'draft' | 'private' | 'deleted';
+  draft?: boolean;
+  private?: boolean;
+  deleted?: boolean;
 }
 
 export interface SavedCalculation {
