@@ -5,11 +5,27 @@
     <lastmod>2026-06-28</lastmod>
   </sitemap>
   <sitemap>
+    <loc>https://neelbyte.in/sitemap_calculators.xml</loc>
+    <lastmod>2026-06-28</lastmod>
+  </sitemap>
+  <sitemap>
     <loc>https://neelbyte.in/post-sitemap.xml</loc>
     <lastmod>2026-06-28</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://neelbyte.in/category-sitemap.xml</loc>
+    <lastmod>2026-06-28</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://neelbyte.in/tag-sitemap.xml</loc>
+    <lastmod>2026-06-28</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://neelbyte.in/author-sitemap.xml</loc>
+    <lastmod>2026-06-28</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://neelbyte.in/image-sitemap.xml</loc>
     <lastmod>2026-06-28</lastmod>
   </sitemap>
 </sitemapindex>

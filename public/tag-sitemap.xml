@@ -1,75 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://neelbyte.in/</loc>
-    <lastmod>2026-06-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://neelbyte.in/about</loc>
+    <loc>https://neelbyte.in/tag/assets</loc>
     <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://neelbyte.in/contact</loc>
+    <loc>https://neelbyte.in/tag/budgeting</loc>
     <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://neelbyte.in/privacy-policy</loc>
+    <loc>https://neelbyte.in/tag/capital-gains</loc>
     <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://neelbyte.in/disclaimer</loc>
+    <loc>https://neelbyte.in/tag/compounding</loc>
     <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://neelbyte.in/terms-and-conditions</loc>
+    <loc>https://neelbyte.in/tag/financial-habits</loc>
     <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://neelbyte.in/cookie-policy</loc>
+    <loc>https://neelbyte.in/tag/investing</loc>
     <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://neelbyte.in/editorial-policy</loc>
+    <loc>https://neelbyte.in/tag/investment-strategy</loc>
     <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://neelbyte.in/refund-policy</loc>
+    <loc>https://neelbyte.in/tag/lifestyle</loc>
     <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://neelbyte.in/sitemap</loc>
+    <loc>https://neelbyte.in/tag/sip</loc>
     <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://neelbyte.in/calculators-all</loc>
+    <loc>https://neelbyte.in/tag/saving</loc>
     <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://neelbyte.in/blog</loc>
+    <loc>https://neelbyte.in/tag/taxes</loc>
     <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://neelbyte.in/tag/wealth-building</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
 </urlset>

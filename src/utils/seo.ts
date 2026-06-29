@@ -446,11 +446,27 @@ export function generateSitemapIndexXml(): string {
     <lastmod>${nowStr}</lastmod>
   </sitemap>
   <sitemap>
+    <loc>${DOMAIN}/sitemap_calculators.xml</loc>
+    <lastmod>${nowStr}</lastmod>
+  </sitemap>
+  <sitemap>
     <loc>${DOMAIN}/post-sitemap.xml</loc>
     <lastmod>${nowStr}</lastmod>
   </sitemap>
   <sitemap>
     <loc>${DOMAIN}/category-sitemap.xml</loc>
+    <lastmod>${nowStr}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>${DOMAIN}/tag-sitemap.xml</loc>
+    <lastmod>${nowStr}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>${DOMAIN}/author-sitemap.xml</loc>
+    <lastmod>${nowStr}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>${DOMAIN}/image-sitemap.xml</loc>
     <lastmod>${nowStr}</lastmod>
   </sitemap>
 </sitemapindex>`;
@@ -791,18 +807,7 @@ export function generatePageSitemapXml(): string {
     <priority>1.0</priority>
   </url>`;
 
-  // 2. Individual Calculators
-  calculators.forEach(calc => {
-    xml += `
-  <url>
-    <loc>${DOMAIN}/${calc.id}</loc>
-    <lastmod>${nowStr}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>`;
-  });
-
-  // 3. Allowed static pages: About, Contact, Privacy Policy, Disclaimer, Terms & Conditions, Cookie Policy, Editorial Policy, Refund Policy, Sitemap page, Calculators All (all important static pages)
+  // 2. Allowed static pages: About, Contact, Privacy Policy, Disclaimer, Terms & Conditions, Cookie Policy, Editorial Policy, Refund Policy, Sitemap page, Calculators All (all important static pages)
   const staticPages = [
     'about', 
     'contact', 
