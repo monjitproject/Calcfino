@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://neelbyte.in/blog/mastering-the-50-30-20-budgeting-rule</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>Mastering the 50/30/20 Rule: A Practical Guide to Smarter Spending</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://neelbyte.in/blog/the-magic-of-compounding-sip</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>The Magic of Compounding: How SIP Mutual Funds Grow Exponential Wealth</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://neelbyte.in/blog/navigating-the-capital-gains-tax-maze</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1554224154-26032ffc0d07?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>Navigating Capital Gains Tax: Legally Shielding Your Portfolio Growth</image:title>
+    </image:image>
+  </url>
+</urlset>

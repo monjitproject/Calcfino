@@ -15,7 +15,10 @@ import {
   getSeoMetadata, 
   normalizeUrl, 
   generateRobotsTxt, 
-  generateSitemapXml 
+  generateSitemapIndexXml,
+  generatePageSitemapXml,
+  generatePostSitemapXml,
+  generateCategorySitemapXml
 } from './utils/seo';
 
 /**
@@ -104,8 +107,17 @@ function parseLocation(pathname: string, search: string) {
   if (normPath === '/robots.txt') {
     return { view: 'virtual-robots', params: null };
   }
-  if (normPath === '/sitemap.xml') {
-    return { view: 'virtual-sitemap', params: null };
+  if (normPath === '/sitemap_index.xml') {
+    return { view: 'virtual-sitemap-index', params: null };
+  }
+  if (normPath === '/page-sitemap.xml') {
+    return { view: 'virtual-page-sitemap', params: null };
+  }
+  if (normPath === '/post-sitemap.xml') {
+    return { view: 'virtual-post-sitemap', params: null };
+  }
+  if (normPath === '/category-sitemap.xml') {
+    return { view: 'virtual-category-sitemap', params: null };
   }
 
   // Calculator custom pages: /emi-calculator, /sip-calculator, etc.
@@ -171,7 +183,7 @@ export default function App() {
     if (redirectPath) {
       // Clear hash and execute modern push replacement (301 redirect parity)
       window.history.replaceState(null, '', redirectPath);
-    } else if (currentPath !== normalized && currentPath !== '/sitemap.xml' && currentPath !== '/robots.txt') {
+    } else if (currentPath !== normalized && !['/robots.txt', '/sitemap_index.xml', '/page-sitemap.xml', '/post-sitemap.xml', '/category-sitemap.xml'].includes(currentPath)) {
       window.history.replaceState(null, '', normalized);
     }
 
@@ -326,10 +338,23 @@ export default function App() {
   };
 
   // 1. Virtual robots.txt and sitemap.xml rendering bypass (pure unstyled plaintext for bots/crawlers)
-  if (currentView === 'virtual-robots' || currentView === 'virtual-sitemap') {
+  if (
+    currentView === 'virtual-robots' || 
+    currentView === 'virtual-sitemap-index' ||
+    currentView === 'virtual-page-sitemap' ||
+    currentView === 'virtual-post-sitemap' ||
+    currentView === 'virtual-category-sitemap'
+  ) {
+    let content = '';
+    if (currentView === 'virtual-robots') content = generateRobotsTxt();
+    else if (currentView === 'virtual-sitemap-index') content = generateSitemapIndexXml();
+    else if (currentView === 'virtual-page-sitemap') content = generatePageSitemapXml();
+    else if (currentView === 'virtual-post-sitemap') content = generatePostSitemapXml();
+    else if (currentView === 'virtual-category-sitemap') content = generateCategorySitemapXml();
+
     return (
       <pre style={{ margin: 0, padding: '24px', fontFamily: 'monospace', fontSize: '12px', whiteSpace: 'pre-wrap', wordBreak: 'break-all', backgroundColor: '#090D16', color: '#CBD5E1' }}>
-        {currentView === 'virtual-robots' ? generateRobotsTxt() : generateSitemapXml()}
+        {content}
       </pre>
     );
   }
