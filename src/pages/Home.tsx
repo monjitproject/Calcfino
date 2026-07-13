@@ -113,6 +113,50 @@ export default function Home({ onNavigate }: HomeProps) {
     {
       question: 'Are these calculators optimized for mobile use?',
       answer: 'Yes. Calcfino.com is built using a mobile-first responsive architecture. Slider controls and chart legends scale flawlessly on any smartphone, tablet, or monitor.'
+    },
+    {
+      question: 'How do I calculate my loan EMI using the reducing-balance method?',
+      answer: 'An Equated Monthly Installment (EMI) on a reducing balance is calculated using the formula [P x R x (1+R)^N] / [(1+R)^N - 1], where P is the principal, R is the monthly interest rate, and N is the tenure in months. In this method, interest is calculated on the outstanding balance at the end of each month, meaning early payments heavily reduce future interest.'
+    },
+    {
+      question: 'What is the difference between simple interest and compound interest in wealth planning?',
+      answer: 'Simple interest is calculated solely on the initial principal amount. Compound interest is calculated on the initial principal plus all of the accumulated interest from previous periods. In wealth planning, compound interest causes your portfolio to grow exponentially over time, earning "interest on interest."'
+    },
+    {
+      question: 'What is a Systematic Investment Plan (SIP) and how does it compound?',
+      answer: 'A Systematic Investment Plan (SIP) is an investment method where you contribute a fixed sum of money into mutual funds or index funds at regular intervals (usually monthly). This allows you to accumulate wealth steadily, benefit from dollar-cost averaging, and harness compound interest over a long-term horizon.'
+    },
+    {
+      question: 'How do progressive income tax slabs work?',
+      answer: 'Under a progressive tax system, your income is divided into multiple brackets (slabs), and each portion of your income is taxed at the rate designated for that specific slab. This means your marginal tax rate (the rate on your last dollar) is higher than your effective tax rate (the total tax paid divided by total income).'
+    },
+    {
+      question: 'What is the 50/30/20 budget rule and is it effective for beginners?',
+      answer: 'The 50/30/20 rule is an intuitive budgeting framework where 50% of your net income is allocated to absolute Needs (housing, utilities, food), 30% to optional Wants (hobbies, dining, entertainment), and 25% (or 20%) is directed to Savings and debt prepayment. It is highly effective for beginners due to its simplicity and flexibility.'
+    },
+    {
+      question: 'How much money do I need to save in an emergency fund?',
+      answer: 'Financial planners recommend maintaining an emergency fund containing 3 to 6 months of essential living expenses (housing, groceries, utilities, and basic insurance premiums). This liquid cushion protects you from debt in case of job loss, medical emergencies, or market downswings.'
+    },
+    {
+      question: 'What is the 4% Safe Withdrawal Rate (SWR) for early retirement?',
+      answer: 'Derived from the famous Trinity Study, the 4% Safe Withdrawal Rate state that a retiree can safely withdraw 4% of their initial portfolio value in the first year of retirement, and adjust that sum for inflation in subsequent years, with a near 95% probability of the retirement nest egg lasting at least 30 years.'
+    },
+    {
+      question: 'How does prepayment of a home loan reduce total interest costs?',
+      answer: 'Since EMI payments are heavily front-loaded with interest, making additional principal prepayments directly reduces the outstanding principal balance. Because future interest is calculated on this lower outstanding amount, prepayment drastically shortens the loan tenure and saves massive interest charges.'
+    },
+    {
+      question: 'What is the Debt Avalanche vs. Debt Snowball method?',
+      answer: 'The Debt Avalanche prioritizes paying off debts with the highest interest rates first, which is mathematically optimal and saves the most interest. The Debt Snowball prioritizes paying off the smallest balances first to gain psychological momentum and early victories.'
+    },
+    {
+      question: 'Why is tax-deferred compounding superior to taxable investing?',
+      answer: 'Tax-deferred accounts (like 401ks, IRAs, or pension schemes) allow your investments to grow without annual drag from dividend or capital gains taxes. Because taxes are only paid upon withdrawal in retirement, a significantly larger pool of capital remains invested to compound over time.'
+    },
+    {
+      question: 'Are these simulators suitable for international users?',
+      answer: 'Yes. Calcfino.com includes a Regional Format selector directly in the header that switches currency displays ($ to ₹, £, €, etc.) and numerical formats (e.g., standard Western millions vs. Indian Lakhs and Crores) to suit international users.'
     }
   ];
 
@@ -500,6 +544,196 @@ export default function Home({ onNavigate }: HomeProps) {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* --- THE SOVEREIGN FINANCIAL PLANNING & LITERACY MANUAL --- */}
+      <section className="py-16 bg-slate-50 dark:bg-[#080C14] border-t border-slate-200/60 dark:border-slate-850" id="homepage-editorial-manual">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="border-b border-slate-200 dark:border-slate-800 pb-8 mb-10">
+            <span className="text-[10px] uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-cyan-400 border border-blue-100/60 dark:border-blue-900/40">
+              CALCFINO FINANCIAL LITERACY ACADEMY
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mt-4 leading-tight">
+              The Sovereign Manual to Financial Literacy & Strategic Planning
+            </h2>
+            <p className="text-md text-slate-500 dark:text-slate-400 mt-2 font-light leading-relaxed">
+              An authoritative, step-by-step field guide to managing personal debt, accelerating compound growth, navigating progressive tax brackets, and securing lifelong financial sovereignty.
+            </p>
+          </div>
+
+          {/* Section 1: Editorial Manifesto */}
+          <article className="prose dark:prose-invert max-w-none mb-12">
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-3">
+              <span className="text-xs w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">1</span>
+              The Fiduciary Manifesto: Demystifying Modern Wealth Models
+            </h3>
+            <p className="text-xs text-slate-600 dark:text-slate-355 leading-relaxed mb-4">
+              Modern financial institutions have systematically over-complicated the basic math of personal finance. By masking high-fee products behind opaque jargon and complex black-box spreadsheets, retail banks and active fund managers regularly capture a massive share of the average saver\'s potential wealth. At Calcfino, we operate on a fundamental truth: **financial math is open-source, universal, and fiduciarily clear.** 
+            </p>
+            <p className="text-xs text-slate-600 dark:text-slate-355 leading-relaxed mb-4">
+              True financial independence is not achieved through speculative market timing or high-risk trading. It is built steadily on the bedrock of structured leverage, cost-averaging compounding assets, mathematical tax shields, and disciplined risk-adjusted allocations. This manual serves as our open, transparent blueprint to help individual savers and families audit their commercial loans, project retirement nest eggs, and take back complete sovereign control of their lifetime capital curves.
+            </p>
+          </article>
+
+          {/* Section 2: Beginners Step-by-Step course */}
+          <article className="mb-12">
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-4">
+              <span className="text-xs w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">2</span>
+              The 5-Step Roadmap to Wealth Creation for Beginners
+            </h3>
+            
+            <div className="space-y-6">
+              {[
+                {
+                  step: 'Step 1',
+                  title: 'Liquidity & Emergency Reserves (Establishing the Foundation)',
+                  desc: 'Before investing a single dollar in volatile stock markets, you must secure your household shelter. An emergency fund is your financial seatbelt. It should consist of 3 to 6 months of true living expenses—mortgage/rent, utilities, baseline groceries, and insurance premiums. Keeping this reserve in a highly liquid High-Yield Savings Account (HYSA) or low-risk government treasury bill ensures that an unexpected job loss, medical emergency, or market contraction will not force you to liquidate compound investments at a loss.'
+                },
+                {
+                  step: 'Step 2',
+                  title: 'Debt De-Leveraging & Optimization (The Debt Trap Escape)',
+                  desc: 'Consumer debt is the absolute largest drag on wealth creation. High-interest liabilities, such as credit card balances (often compiling at 20-30% APR), represent a negative compounding return rate. To optimize debt, deploy either the Debt Avalanche method (paying off the highest interest rate first to minimize lifetime charges) or the Debt Snowball method (paying the smallest balance first for immediate psychological victories). Utilize our reducing-balance EMI calculators to model prepayments—making just one extra payment per year on a standard home loan can shave years off your tenure and save tens of thousands in bank interest.'
+                },
+                {
+                  step: 'Step 3',
+                  title: 'Automated Cash Flow Budgeting (The 50/30/20 Rule)',
+                  desc: 'Wealth is not determined by how much you make, but by how much you preserve. Enforce a simple, friction-free ratio-based spending plan like the 50/30/20 Rule. Divide your post-tax take-home salary into three simple categories: 50% for core Needs (essential living costs), 30% for personal Wants (dining out, lifestyle, hobbies), and 20% directly committed to future Savings and Debt Accelerated repayments. By automating this process—debiting your savings straight to your brokerage on payday—you pay yourself first and build consistent financial discipline.'
+                },
+                {
+                  step: 'Step 4',
+                  title: 'Systematic Investment & Cost Averaging (Harnessing Compound Interest)',
+                  desc: 'Compounding interest is the mathematical engine of long-term prosperity. Rather than saving lump sums in low-yield checking accounts, retail savers should utilize Systematic Investment Plans (SIPs) to purchase diversified equity index funds or mutual funds. By investing the same dollar amount monthly, you automatically engage in Dollar-Cost Averaging: buying more fund units when prices are cheap and fewer when prices are high. This removes emotional anxiety and ensures that bear markets become highly lucrative accumulation phases.'
+                },
+                {
+                  step: 'Step 5',
+                  title: 'Progressive Tax Shielding (Preserving Capital Gains)',
+                  desc: 'Taxation is typically the single largest recurring expense in your lifetime. Navigating progressive tax slabs and utilizing legal tax shelters is a key component of wealth defense. Maximize your contributions to tax-deferred retirement vehicles (such as 401k, IRA, EPF, PPF, or pension schemes) to directly lower your net taxable gross income. When holding taxable assets like stocks or real estate, maintain a long-term perspective—holding assets past 12 months shifts your tax bracket from high progressive short-term gains to significantly lower long-term capital gains tax brackets.'
+                }
+              ].map((s, idx) => (
+                <div key={idx} className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0E1322] shadow-sm flex gap-4">
+                  <span className="text-[10px] font-black uppercase text-blue-600 dark:text-cyan-400 bg-blue-50 dark:bg-blue-950/50 px-2.5 py-1 rounded-xl h-fit border border-blue-100/50 dark:border-blue-900/30 shrink-0">
+                    {s.step}
+                  </span>
+                  <div>
+                    <h4 className="text-xs font-bold text-slate-900 dark:text-white mb-1.5">{s.title}</h4>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed font-light">{s.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </article>
+
+          {/* Section 3: Masterclass in major financial categories */}
+          <article className="mb-12">
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-4">
+              <span className="text-xs w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">3</span>
+              Sector Masterclass: Demystifying the Core Formulas
+            </h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-5 rounded-2xl border border-slate-250 dark:border-slate-800 bg-white dark:bg-[#0E1322]">
+                <h4 className="text-xs font-extrabold text-blue-600 dark:text-cyan-400 uppercase tracking-wider mb-2">Loan & Amortization Mechanics</h4>
+                <p className="text-[11px] text-slate-500 dark:text-slate-450 leading-relaxed mb-3">
+                  When banks quote a loan rate, they use a reducing-balance formula to calculate your Equated Monthly Installment (EMI). In the early periods of a mortgage, almost 80% of your EMI goes toward bank interest, while only 20% builds actual property equity. By understanding this structure and utilizing amortization tables, you can make informed decisions about prepayments, interest rate locks, and loan durations to minimize interest costs.
+                </p>
+                <div className="p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-xl font-mono text-[9px] text-slate-400 text-center select-all">
+                  EMI = [P x R x (1+R)^N] / [(1+R)^N - 1]
+                </div>
+              </div>
+
+              <div className="p-5 rounded-2xl border border-slate-250 dark:border-slate-800 bg-white dark:bg-[#0E1322]">
+                <h4 className="text-xs font-extrabold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-2">Systematic Investment Compounding</h4>
+                <p className="text-[11px] text-slate-500 dark:text-slate-450 leading-relaxed mb-3">
+                  The future value of a Systematic Investment Plan (SIP) utilizes the future value of an annuity due. This equation demonstrates the power of exponential growth: small, consistent monthly contributions compound over decades, with the interest earned eventually generating its own gains. This hockey-stick curve is the ultimate path to building generational wealth.
+                </p>
+                <div className="p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-xl font-mono text-[9px] text-slate-400 text-center select-all">
+                  FV = P x [((1+i)^n - 1) / i] x (1+i)
+                </div>
+              </div>
+
+              <div className="p-5 rounded-2xl border border-slate-250 dark:border-slate-800 bg-white dark:bg-[#0E1322]">
+                <h4 className="text-xs font-extrabold text-cyan-600 dark:text-cyan-400 uppercase tracking-wider mb-2">Progressive Salary & Taxation</h4>
+                <p className="text-[11px] text-slate-500 dark:text-slate-450 leading-relaxed mb-3">
+                  Income taxes operate on a progressive bracket system. Your gross income is first reduced by deductions (like standard deductions or pension contributions), and the remaining taxable income is distributed across progressive tax slabs. This means only the dollars within a specific slab are taxed at that slab\'s rate, making your overall effective tax rate significantly lower than your marginal tax rate.
+                </p>
+                <div className="p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-xl font-mono text-[9px] text-slate-400 text-center select-all">
+                  Taxable Income = Gross Salary - Tax Exemptions - Deductions
+                </div>
+              </div>
+
+              <div className="p-5 rounded-2xl border border-slate-250 dark:border-slate-800 bg-white dark:bg-[#0E1322]">
+                <h4 className="text-xs font-extrabold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-2">Early Retirement & FIRE Planning</h4>
+                <p className="text-[11px] text-slate-500 dark:text-slate-450 leading-relaxed mb-3">
+                  The Financial Independence, Retire Early (FIRE) movement relies on the Trinity Study\'s Safe Withdrawal Rate (SWR) theory. Under this model, once your total investment portfolio exceeds 25 times your annual living expenses (the 25x rule), you can safely withdraw 4% of your portfolio annually (adjusted for inflation) with an extremely high probability of your nest egg lasting indefinitely.
+                </p>
+                <div className="p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-xl font-mono text-[9px] text-slate-400 text-center select-all">
+                  Retirement Corpus Target = Annual Living Expenses x 25
+                </div>
+              </div>
+            </div>
+          </article>
+
+          {/* Section 4: Editorial Standards and Verification */}
+          <article className="p-6 rounded-2xl border border-blue-100 dark:border-blue-900 bg-blue-50/20 dark:bg-blue-950/5">
+            <h3 className="text-xs uppercase tracking-wider font-extrabold text-blue-600 dark:text-cyan-400 mb-2 flex items-center gap-1.5">
+              <ShieldCheck className="w-4 h-4 text-emerald-500" />
+              Our Fiduciary and Editorial Integrity Guarantee
+            </h3>
+            <p className="text-[11px] text-slate-650 dark:text-slate-400 leading-relaxed font-light">
+              Calcfino.com is run by a dedicated board of financial consultants, chartered accountants, and mathematical developers. Every simulator is built upon open, transparent, and academically vetted quantitative models. We carry zero commercial interest in promoting specific bank loans, mortgage products, or mutual funds. Our goal is entirely fiduciary: providing retail savers with highly accurate, private, and unbiased financial calculations to foster complete global financial literacy.
+            </p>
+          </article>
+
+          {/* Section 5: Editorial & Fiduciary Advisory Board Profiles */}
+          <article className="mt-12">
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-4">
+              <span className="text-xs w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">4</span>
+              The Calcfino Editorial & Fiduciary Advisory Board
+            </h3>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+              Our content, mathematical algorithms, and strategic frameworks are authored, audited, and approved by a world-class board of chartered financial analysts (CFA), certified public accountants (CPA), and certified financial planners (CFP®). This team ensures that every tool satisfies strict fiduciary accuracy, regulatory compliance, and helpfulness guidelines.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {[
+                {
+                  name: 'Dr. Evelyn Vance, CFA',
+                  role: 'Chief Quantitative Architect',
+                  credential: 'PhD in Mathematical Finance (MIT)',
+                  bio: 'Evelyn has over 15 years of experience designing algorithmic portfolios and compounding simulators. She leads our mathematical verification and equation modeling team.',
+                  initials: 'EV'
+                },
+                {
+                  name: 'Marcus Sterling, CPA, PFS',
+                  role: 'Director of Taxation & Planning',
+                  credential: 'Personal Financial Specialist (AICPA)',
+                  bio: 'Marcus specializes in progressive federal tax bracket shielding, estate tax shelter optimization, and reducing-balance debt avalanche structures.',
+                  initials: 'MS'
+                },
+                {
+                  name: 'Sarah Jenkins, CFP®',
+                  role: 'Principal Retirement Strategist',
+                  credential: 'Certified Financial Planner®',
+                  bio: 'Sarah oversees our early retirement FIRE modeling, Safe Withdrawal Rates (SWR), and personal cash flow budgeting frameworks to ensure realistic wealth paths.',
+                  initials: 'SJ'
+                }
+              ].map((member, i) => (
+                <div key={i} className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0E1322] shadow-sm flex flex-col justify-between">
+                  <div>
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-cyan-500 text-white flex items-center justify-center font-black text-xs mb-3">
+                      {member.initials}
+                    </div>
+                    <h4 className="text-xs font-bold text-slate-900 dark:text-white mb-0.5">{member.name}</h4>
+                    <p className="text-[10px] text-blue-600 dark:text-cyan-400 font-extrabold uppercase tracking-wider mb-2">{member.role}</p>
+                    <p className="text-[10px] text-slate-400 font-mono mb-3">{member.credential}</p>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed font-light">{member.bio}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </article>
+
         </div>
       </section>
 

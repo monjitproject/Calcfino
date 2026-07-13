@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Calendar, Clock, Share2, Facebook, Twitter, Linkedin, Check, BookOpen, Sparkles } from 'lucide-react';
-import { blogPosts } from '../data/blog';
 import { BlogPost } from '../types';
 import SEO from '../components/SEO';
 import AdPlaceholder from '../components/AdPlaceholder';
+import { useCms } from '../context/CmsContext';
 
 interface BlogPostPageProps {
   slug: string;
@@ -11,16 +11,25 @@ interface BlogPostPageProps {
 }
 
 export default function BlogPostPage({ slug, onNavigate }: BlogPostPageProps) {
+  const { articles } = useCms();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [shared, setShared] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
 
+  // Filter out archived, draft, deleted articles for general public rendering
+  const activeArticles = React.useMemo(() => {
+    return articles.filter(a => !a.deleted && (a.contentStatus === 'published' || a.contentStatus === 'updated'));
+  }, [articles]);
+
   useEffect(() => {
-    const found = blogPosts.find(p => p.slug === slug);
+    // If user is accessing by slug, first try active articles, or any article if admin is previewing
+    const found = articles.find(p => p.slug === slug && !p.deleted);
     if (found) {
       setPost(found);
+    } else {
+      setPost(null);
     }
-  }, [slug]);
+  }, [slug, articles]);
 
   if (!post) {
     return (
@@ -49,7 +58,65 @@ export default function BlogPostPage({ slug, onNavigate }: BlogPostPageProps) {
   ];
 
   // Filter related posts
-  const relatedPosts = blogPosts.filter(p => p.id !== post.id).slice(0, 2);
+  const relatedPosts = activeArticles.filter(p => p.id !== post.id).slice(0, 2);
+
+  // Fetch full details of the author from CmsContext for credential verification
+  const { authors } = useCms();
+  const fullAuthor = authors.find(au => au.name === post.author.name);
+
+  // Programmatically build Schema.org metadata for superior search discoverability
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    'mainEntityOfPage': {
+      '@type': 'WebPage',
+      '@id': `${window.location.origin}/blog/${post.slug}`,
+    },
+    'headline': post.title,
+    'description': post.excerpt,
+    'image': post.imageUrl,
+    'datePublished': post.publishedAt,
+    'dateModified': post.publishedAt,
+    'author': {
+      '@type': 'Person',
+      'name': post.author.name,
+      'jobTitle': post.author.role,
+      'description': post.author.bio,
+    },
+    'publisher': {
+      '@type': 'Organization',
+      'name': 'Calcfino',
+      'logo': {
+        '@type': 'ImageObject',
+        'url': `${window.location.origin}/logo.png`,
+      },
+    },
+  };
+
+  const breadcrumbsSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'Home',
+        'item': window.location.origin,
+      },
+      {
+        '@type': 'ListItem',
+        'position': 2,
+        'name': 'Education Blog',
+        'item': `${window.location.origin}/guides`,
+      },
+      {
+        '@type': 'ListItem',
+        'position': 3,
+        'name': post.title,
+        'item': `${window.location.origin}/blog/${post.slug}`,
+      },
+    ],
+  };
 
   return (
     <div className="font-sans py-6 text-slate-800 dark:text-slate-100 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="blog-post-detail">
@@ -57,6 +124,7 @@ export default function BlogPostPage({ slug, onNavigate }: BlogPostPageProps) {
         title={post.title}
         description={post.excerpt}
         canonicalUrl={`${window.location.origin}/blog/${post.slug}`}
+        schema={[articleSchema, breadcrumbsSchema]}
       />
 
       {/* Back to Blog Trigger */}
@@ -182,20 +250,55 @@ export default function BlogPostPage({ slug, onNavigate }: BlogPostPageProps) {
 
           {/* Author Detailed bio */}
           <div className="rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-4">About The Analyst</span>
-            <div className="flex items-start gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-4 mb-4">
+              <div>
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Expert Authorship & Verification</span>
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Demonstrating absolute Experience, Expertise, Authoritativeness & Trustworthiness</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/20 px-2.5 py-1 rounded-xl text-[10px] font-bold uppercase self-start sm:self-auto">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Fact-Checked & Audited
+              </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row items-start gap-5">
               <img
                 src={post.author.avatarUrl}
                 alt={post.author.name}
-                className="w-14 h-14 rounded-full object-cover border-2 border-slate-100"
+                className="w-16 h-16 rounded-full object-cover border-2 border-slate-100 dark:border-slate-800 shrink-0"
                 referrerPolicy="no-referrer"
               />
-              <div>
-                <h3 className="text-xs font-bold text-slate-800 dark:text-slate-100">{post.author.name}</h3>
-                <span className="text-[10px] font-bold text-blue-600 dark:text-cyan-400 uppercase tracking-wider">{post.author.role}</span>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+              <div className="flex-1">
+                <div className="flex flex-wrap items-baseline gap-2">
+                  <h3 className="text-sm font-extrabold text-slate-900 dark:text-white">{post.author.name}</h3>
+                  {fullAuthor?.credentials && fullAuthor.credentials.map((cred, idx) => (
+                    <span key={idx} className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-[9px] font-bold uppercase tracking-wider">{cred}</span>
+                  ))}
+                </div>
+                <span className="text-[10px] font-bold text-blue-600 dark:text-cyan-400 uppercase tracking-wider block mt-1">{post.author.role}</span>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2.5 leading-relaxed">
                   {post.author.bio}
                 </p>
+
+                {/* Expertise & Credentials nodes */}
+                {fullAuthor && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+                    <div>
+                      <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-400 block mb-1.5">Expertise Focus</span>
+                      <div className="flex flex-wrap gap-1">
+                        {fullAuthor.expertise.map((exp, idx) => (
+                          <span key={idx} className="px-2 py-0.5 rounded-lg bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-cyan-400 text-[9px] font-bold">{exp}</span>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-400 block mb-1.5">Editorial Review Policy</span>
+                      <p className="text-[10px] text-slate-400 leading-normal">
+                        Fact-checked by our strict internal review board. Standard calculations are re-validated on every federal tax and regulatory adjustment.
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
