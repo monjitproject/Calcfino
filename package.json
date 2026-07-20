@@ -3,13 +3,20 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
+
+<<<<<<< cloudflare/workers-autoconfig
+    "build": "vite build",
+    "preview": "npm run build && wrangler dev",
+=======
     "build": "npx tsx scripts/generate-seo.ts && vite build",
     "preview": "vite preview",
+>>>>>>> main
+
     "clean": "rm -rf dist server.js",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "deploy": "npm run build && wrangler deploy"
   },
 
   "dependencies": {
@@ -33,6 +40,7 @@
     "esbuild": "^0.25.0",
     "tailwindcss": "^4.1.14",
     "tsx": "^4.21.0",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "vite": "^6.2.3"
   }
 }
