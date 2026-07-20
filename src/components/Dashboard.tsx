@@ -3,6 +3,7 @@ import { Bookmark, Clock, User, Award, CheckCircle, Settings, Trash2, Play, Hear
 import { SavedCalculation, UserProfile } from '../types';
 import { calculators } from '../data/calculators';
 import { useRegionalSettings } from '../context/RegionalSettingsContext';
+import SeoAuditPanel from './SeoAuditPanel';
 import {
   ResponsiveContainer,
   AreaChart,
@@ -38,7 +39,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
   const [formData, setFormData] = useState<UserProfile>({ ...profile });
   const [saveSuccess, setSaveSuccess] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<'goal' | 'saved' | 'usage'>('goal');
+  const [activeTab, setActiveTab] = useState<'goal' | 'saved' | 'usage' | 'seo'>('goal');
 
   // 1. Goal projection trend data
   const goalTrendData = Array.from({ length: 12 }, (_, i) => {
@@ -390,7 +391,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
               </div>
 
               {/* Interactive Tabs */}
-              <div className="flex rounded-xl bg-slate-100 dark:bg-slate-950 p-1 self-start sm:self-center border border-slate-200/20">
+              <div className="flex flex-wrap gap-1 rounded-xl bg-slate-100 dark:bg-slate-950 p-1 self-start sm:self-center border border-slate-200/20">
                 <button
                   onClick={() => setActiveTab('goal')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${activeTab === 'goal' ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-cyan-400 shadow-sm border border-slate-200/50 dark:border-slate-800' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 border border-transparent'}`}
@@ -412,73 +413,32 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
                   <Target className="w-3.5 h-3.5" />
                   Category Focus
                 </button>
+                <button
+                  onClick={() => setActiveTab('seo')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${activeTab === 'seo' ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-cyan-400 shadow-sm border border-slate-200/50 dark:border-slate-800' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 border border-transparent'}`}
+                >
+                  <Award className="w-3.5 h-3.5 text-amber-500" />
+                  SEO Audit Monitor
+                </button>
               </div>
             </div>
 
-            {/* Render selected chart */}
-            <div className="h-64 sm:h-72 w-full mt-4">
-              {activeTab === 'goal' && (
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={goalTrendData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-                    <defs>
-                      <linearGradient id="colorCash" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.2}/>
-                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                      </linearGradient>
-                      <linearGradient id="colorGrowth" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.25}/>
-                        <stop offset="95%" stopColor="#06b6d4" stopOpacity={0}/>
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" className="stroke-slate-100 dark:stroke-slate-800/50" strokeOpacity={0.5} />
-                    <XAxis 
-                      dataKey="name" 
-                      className="text-[10px] font-semibold text-slate-400 fill-slate-400 font-sans"
-                      tickLine={false} 
-                      axisLine={false}
-                    />
-                    <YAxis 
-                      className="text-[10px] font-semibold text-slate-400 fill-slate-400 font-sans"
-                      tickLine={false} 
-                      axisLine={false}
-                      tickFormatter={(val) => {
-                        if (val >= 1000000) return `${(val / 1000000).toFixed(1)}M`;
-                        if (val >= 1000) return `${(val / 1000).toFixed(0)}K`;
-                        return val;
-                      }}
-                    />
-                    <Tooltip content={<CustomChartTooltip />} />
-                    <Legend 
-                      verticalAlign="top" 
-                      height={36} 
-                      iconType="circle"
-                      iconSize={8}
-                      className="text-xs font-semibold text-slate-700 dark:text-slate-300"
-                    />
-                    <Area 
-                      type="monotone" 
-                      dataKey="Cash Savings" 
-                      stroke="#3b82f6" 
-                      strokeWidth={2.5}
-                      fillOpacity={1} 
-                      fill="url(#colorCash)" 
-                    />
-                    <Area 
-                      type="monotone" 
-                      dataKey="Investment Growth (6%)" 
-                      stroke="#06b6d4" 
-                      strokeWidth={2.5}
-                      fillOpacity={1} 
-                      fill="url(#colorGrowth)" 
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
-              )}
-
-              {activeTab === 'saved' && (
-                savedCalcsChartData.length > 0 ? (
+            {/* Render selected content */}
+            {activeTab !== 'seo' ? (
+              <div className="h-64 sm:h-72 w-full mt-4">
+                {activeTab === 'goal' && (
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={savedCalcsChartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+                    <AreaChart data={goalTrendData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="colorCash" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.2}/>
+                          <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                        </linearGradient>
+                        <linearGradient id="colorGrowth" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.25}/>
+                          <stop offset="95%" stopColor="#06b6d4" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
                       <CartesianGrid strokeDasharray="3 3" className="stroke-slate-100 dark:stroke-slate-800/50" strokeOpacity={0.5} />
                       <XAxis 
                         dataKey="name" 
@@ -497,72 +457,126 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
                         }}
                       />
                       <Tooltip content={<CustomChartTooltip />} />
-                      <Bar 
-                        dataKey="Value" 
-                        fill="#6366f1" 
-                        radius={[8, 8, 0, 0]} 
-                        maxBarSize={50}
-                      >
-                        {savedCalcsChartData.map((entry, index) => (
-                          <Cell 
-                            key={`cell-${index}`} 
-                            fill={index % 2 === 0 ? '#6366f1' : '#a855f7'} 
-                          />
-                        ))}
-                      </Bar>
-                    </BarChart>
+                      <Legend 
+                        verticalAlign="top" 
+                        height={36} 
+                        iconType="circle"
+                        iconSize={8}
+                        className="text-xs font-semibold text-slate-700 dark:text-slate-300"
+                      />
+                      <Area 
+                        type="monotone" 
+                        dataKey="Cash Savings" 
+                        stroke="#3b82f6" 
+                        strokeWidth={2.5}
+                        fillOpacity={1} 
+                        fill="url(#colorCash)" 
+                      />
+                      <Area 
+                        type="monotone" 
+                        dataKey="Investment Growth (6%)" 
+                        stroke="#06b6d4" 
+                        strokeWidth={2.5}
+                        fillOpacity={1} 
+                        fill="url(#colorGrowth)" 
+                      />
+                    </AreaChart>
                   </ResponsiveContainer>
-                ) : (
-                  <div className="h-full flex flex-col items-center justify-center text-center p-6 bg-slate-50 dark:bg-slate-950/20 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800">
-                    <p className="text-xs text-slate-400 font-medium">No calculated points available yet.</p>
-                    <p className="text-[10px] text-slate-400 mt-1 max-w-xs">Save your calculations in any calculator page to generate comparison metrics here!</p>
-                  </div>
-                )
-              )}
+                )}
 
-              {activeTab === 'usage' && (
-                categoryChartData.length > 0 ? (
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={categoryChartData} layout="vertical" margin={{ top: 10, right: 20, left: 10, bottom: 10 }}>
-                      <CartesianGrid strokeDasharray="3 3" horizontal={false} className="stroke-slate-100 dark:stroke-slate-800/50" strokeOpacity={0.5} />
-                      <XAxis 
-                        type="number"
-                        className="text-[10px] font-semibold text-slate-400 fill-slate-400 font-sans"
-                        tickLine={false} 
-                        axisLine={false}
-                        allowDecimals={false}
-                      />
-                      <YAxis 
-                        dataKey="name" 
-                        type="category"
-                        className="text-[10px] font-semibold text-slate-700 dark:text-slate-300 fill-current font-sans"
-                        tickLine={false} 
-                        axisLine={false}
-                        width={100}
-                      />
-                      <Tooltip content={<CustomChartTooltip />} />
-                      <Bar 
-                        dataKey="Count" 
-                        fill="#06b6d4" 
-                        radius={[0, 6, 6, 0]}
-                        maxBarSize={24}
-                      >
-                        {categoryChartData.map((entry, index) => (
-                          <Cell 
-                            key={`cell-${index}`} 
-                            fill={index % 2 === 0 ? '#06b6d4' : '#10b981'} 
-                          />
-                        ))}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                ) : (
-                  <div className="h-full flex flex-col items-center justify-center text-center p-6 bg-slate-50 dark:bg-slate-950/20 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800">
-                    <p className="text-xs text-slate-400 font-medium">No activity focus data to visualize yet.</p>
-                  </div>
-                )
-              )}
-            </div>
+                {activeTab === 'saved' && (
+                  savedCalcsChartData.length > 0 ? (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={savedCalcsChartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" className="stroke-slate-100 dark:stroke-slate-800/50" strokeOpacity={0.5} />
+                        <XAxis 
+                          dataKey="name" 
+                          className="text-[10px] font-semibold text-slate-400 fill-slate-400 font-sans"
+                          tickLine={false} 
+                          axisLine={false}
+                        />
+                        <YAxis 
+                          className="text-[10px] font-semibold text-slate-400 fill-slate-400 font-sans"
+                          tickLine={false} 
+                          axisLine={false}
+                          tickFormatter={(val) => {
+                            if (val >= 1000000) return `${(val / 1000000).toFixed(1)}M`;
+                            if (val >= 1000) return `${(val / 1000).toFixed(0)}K`;
+                            return val;
+                          }}
+                        />
+                        <Tooltip content={<CustomChartTooltip />} />
+                        <Bar 
+                          dataKey="Value" 
+                          fill="#6366f1" 
+                          radius={[8, 8, 0, 0]} 
+                          maxBarSize={50}
+                        >
+                          {savedCalcsChartData.map((entry, index) => (
+                            <Cell 
+                              key={`cell-${index}`} 
+                              fill={index % 2 === 0 ? '#6366f1' : '#a855f7'} 
+                            />
+                          ))}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <div className="h-full flex flex-col items-center justify-center text-center p-6 bg-slate-50 dark:bg-slate-950/20 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800">
+                      <p className="text-xs text-slate-400 font-medium">No calculated points available yet.</p>
+                      <p className="text-[10px] text-slate-400 mt-1 max-w-xs">Save your calculations in any calculator page to generate comparison metrics here!</p>
+                    </div>
+                  )
+                )}
+
+                {activeTab === 'usage' && (
+                  categoryChartData.length > 0 ? (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={categoryChartData} layout="vertical" margin={{ top: 10, right: 20, left: 10, bottom: 10 }}>
+                        <CartesianGrid strokeDasharray="3 3" horizontal={false} className="stroke-slate-100 dark:stroke-slate-800/50" strokeOpacity={0.5} />
+                        <XAxis 
+                          type="number"
+                          className="text-[10px] font-semibold text-slate-400 fill-slate-400 font-sans"
+                          tickLine={false} 
+                          axisLine={false}
+                          allowDecimals={false}
+                        />
+                        <YAxis 
+                          dataKey="name" 
+                          type="category"
+                          className="text-[10px] font-semibold text-slate-700 dark:text-slate-300 fill-current font-sans"
+                          tickLine={false} 
+                          axisLine={false}
+                          width={100}
+                        />
+                        <Tooltip content={<CustomChartTooltip />} />
+                        <Bar 
+                          dataKey="Count" 
+                          fill="#06b6d4" 
+                          radius={[0, 6, 6, 0]}
+                          maxBarSize={24}
+                        >
+                          {categoryChartData.map((entry, index) => (
+                            <Cell 
+                              key={`cell-${index}`} 
+                              fill={index % 2 === 0 ? '#06b6d4' : '#10b981'} 
+                            />
+                          ))}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <div className="h-full flex flex-col items-center justify-center text-center p-6 bg-slate-50 dark:bg-slate-950/20 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800">
+                      <p className="text-xs text-slate-400 font-medium">No activity focus data to visualize yet.</p>
+                    </div>
+                  )
+                )}
+              </div>
+            ) : (
+              <div className="mt-6 border-t border-slate-100 dark:border-slate-800/60 pt-6">
+                <SeoAuditPanel />
+              </div>
+            )}
 
             <div className="mt-4 flex items-center justify-between text-[10px] text-slate-400 pt-3 border-t border-slate-100 dark:border-slate-800/50">
               <span>Projection: 12 Months Projection based on your {formatCurrency(profile.monthlySavings)}/mo savings profile.</span>

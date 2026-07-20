@@ -207,58 +207,125 @@ export default function Header({ currentView, onNavigate, darkMode, setDarkMode 
             <button
               id="nav-home"
               onClick={() => onNavigate('home')}
-              className={`text-sm font-medium hover:text-blue-600 dark:hover:text-cyan-400 transition-colors ${currentView === 'home' ? 'text-blue-600 dark:text-cyan-400' : 'text-slate-600 dark:text-slate-300'}`}
+              className={`text-sm font-semibold hover:text-blue-600 dark:hover:text-cyan-400 transition-colors ${currentView === 'home' ? 'text-blue-600 dark:text-cyan-400' : 'text-slate-600 dark:text-slate-300'}`}
             >
               Home
             </button>
 
-            {/* Nav Dropdowns / Mega Menu */}
-            {navCategories.map(cat => (
-              <div
-                key={cat.id}
-                className="relative group"
-                onMouseEnter={() => setMegaMenuOpen(cat.id)}
-                onMouseLeave={() => setMegaMenuOpen(null)}
-              >
-                <button className="flex items-center gap-1 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-cyan-400 transition-colors py-2">
-                  <span className="text-slate-400 group-hover:text-blue-500 transition-colors">{cat.icon}</span>
-                  {cat.label}
-                  <ChevronDown className="w-3 h-3 group-hover:rotate-180 transition-transform duration-300" />
-                </button>
-
-                {/* Dropdown Card */}
-                <div className={`absolute left-0 mt-0 w-80 rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-black/50 p-4 transition-all duration-200 origin-top-left ${megaMenuOpen === cat.id ? 'opacity-100 scale-100 translate-y-0 visible' : 'opacity-0 scale-95 -translate-y-2 invisible'}`}>
-                  <div className="mb-2 pb-2 border-b border-slate-100 dark:border-slate-800">
-                    <span className="text-xs font-bold text-slate-400 tracking-wider uppercase">{cat.label}</span>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    {cat.items.map(item => (
-                      <button
-                        key={item.id}
-                        onClick={() => handleSelectCalculator(item.id)}
-                        className="text-left w-full px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-cyan-400 transition-all"
-                      >
-                        {item.name}
-                      </button>
-                    ))}
+            {/* 1. Finance Tools Megamenu Dropdown */}
+            <div
+              className="relative group"
+              onMouseEnter={() => setMegaMenuOpen('finance-tools')}
+              onMouseLeave={() => setMegaMenuOpen(null)}
+            >
+              <button className="flex items-center gap-1 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-cyan-400 transition-colors py-2">
+                Finance Tools
+                <ChevronDown className="w-3 h-3 group-hover:rotate-180 transition-transform duration-300" />
+              </button>
+              <div className={`absolute left-0 mt-0 w-80 rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl p-4 transition-all duration-250 origin-top-left ${megaMenuOpen === 'finance-tools' ? 'opacity-100 scale-100 translate-y-0 visible' : 'opacity-0 scale-95 -translate-y-2 invisible'}`}>
+                <div className="mb-2 pb-2 border-b border-slate-100 dark:border-slate-800">
+                  <span className="text-xs font-bold text-slate-400 tracking-wider uppercase">Interactive Hubs</span>
+                </div>
+                <div className="grid grid-cols-2 gap-1">
+                  {[
+                    { id: 'investment', label: 'Investment' },
+                    { id: 'loans', label: 'Loans' },
+                    { id: 'emi', label: 'EMI' },
+                    { id: 'mutual-funds', label: 'Mutual Funds' },
+                    { id: 'retirement', label: 'Retirement' },
+                    { id: 'savings', label: 'Savings' },
+                    { id: 'budgeting', label: 'Budgeting' },
+                    { id: 'taxes', label: 'Taxes' },
+                    { id: 'insurance', label: 'Insurance' },
+                    { id: 'banking', label: 'Banking' },
+                    { id: 'credit-cards', label: 'Credit Cards' },
+                  ].map(sub => (
                     <button
-                      onClick={() => onNavigate('calculators-all')}
-                      className="text-left w-full px-3 py-2 mt-1 rounded-xl text-xs font-bold text-blue-600 dark:text-cyan-400 bg-blue-50/50 dark:bg-blue-950/20 hover:bg-blue-50 dark:hover:bg-blue-950/40 text-center transition-all"
+                      key={sub.id}
+                      onClick={() => onNavigate(`category-${sub.id}`, { category: sub.id })}
+                      className="text-left px-2.5 py-1.5 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-cyan-400 transition-all"
                     >
-                      View All Tools
+                      {sub.label}
                     </button>
-                  </div>
+                  ))}
+                </div>
+                <button
+                  onClick={() => onNavigate('calculators-all')}
+                  className="text-center w-full px-3 py-2 mt-3 rounded-xl text-xs font-bold text-blue-600 dark:text-cyan-400 bg-blue-50/50 dark:bg-blue-950/20 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-all"
+                >
+                  View All 70+ Simulators
+                </button>
+              </div>
+            </div>
+
+            {/* 2. Educational Hub Dropdown */}
+            <div
+              className="relative group"
+              onMouseEnter={() => setMegaMenuOpen('edu-hub')}
+              onMouseLeave={() => setMegaMenuOpen(null)}
+            >
+              <button className="flex items-center gap-1 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-cyan-400 transition-colors py-2">
+                Learning Center
+                <ChevronDown className="w-3 h-3 group-hover:rotate-180 transition-transform duration-300" />
+              </button>
+              <div className={`absolute left-0 mt-0 w-64 rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl p-4 transition-all duration-200 origin-top-left ${megaMenuOpen === 'edu-hub' ? 'opacity-100 scale-100 translate-y-0 visible' : 'opacity-0 scale-95 -translate-y-2 invisible'}`}>
+                <div className="flex flex-col gap-1">
+                  <button
+                    onClick={() => onNavigate('category-guides', { category: 'guides' })}
+                    className="text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-cyan-400 transition-all"
+                  >
+                    Guides & Tutorials
+                  </button>
+                  <button
+                    onClick={() => onNavigate('blog')}
+                    className="text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-cyan-400 transition-all"
+                  >
+                    Wealth Blog
+                  </button>
+                  <button
+                    onClick={() => onNavigate('sitemap')}
+                    className="text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-cyan-400 transition-all"
+                  >
+                    Portal Categories
+                  </button>
                 </div>
               </div>
-            ))}
+            </div>
 
-            <button
-              id="nav-blog"
-              onClick={() => onNavigate('blog')}
-              className={`text-sm font-medium hover:text-blue-600 dark:hover:text-cyan-400 transition-colors ${currentView === 'blog' ? 'text-blue-600 dark:text-cyan-400' : 'text-slate-600 dark:text-slate-300'}`}
+            {/* 3. Company & Editorial Dropdown */}
+            <div
+              className="relative group"
+              onMouseEnter={() => setMegaMenuOpen('company')}
+              onMouseLeave={() => setMegaMenuOpen(null)}
             >
-              Finance Blog
-            </button>
+              <button className="flex items-center gap-1 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-cyan-400 transition-colors py-2">
+                Company
+                <ChevronDown className="w-3 h-3 group-hover:rotate-180 transition-transform duration-300" />
+              </button>
+              <div className={`absolute left-0 mt-0 w-64 rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl p-4 transition-all duration-200 origin-top-left ${megaMenuOpen === 'company' ? 'opacity-100 scale-100 translate-y-0 visible' : 'opacity-0 scale-95 -translate-y-2 invisible'}`}>
+                <div className="flex flex-col gap-1">
+                  <button
+                    onClick={() => onNavigate('about-us')}
+                    className="text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-cyan-400 transition-all"
+                  >
+                    About Us
+                  </button>
+                  <button
+                    onClick={() => onNavigate('editorial-policy')}
+                    className="text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-cyan-400 transition-all"
+                  >
+                    Editorial Policy
+                  </button>
+                  <button
+                    onClick={() => onNavigate('contact-us')}
+                    className="text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-cyan-400 transition-all"
+                  >
+                    Contact Us
+                  </button>
+                </div>
+              </div>
+            </div>
+
             <button
               id="nav-dashboard"
               onClick={() => onNavigate('dashboard')}
@@ -465,36 +532,88 @@ export default function Header({ currentView, onNavigate, darkMode, setDarkMode 
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 transition-colors duration-200">
-          <div className="px-4 pt-2 pb-6 space-y-3">
+          <div className="px-4 pt-2 pb-6 space-y-4">
             <div className="flex flex-col gap-1">
               <button
                 onClick={() => { onNavigate('home'); setMobileMenuOpen(false); }}
-                className={`text-left w-full px-4 py-2.5 rounded-xl text-sm font-medium ${currentView === 'home' ? 'bg-blue-50 text-blue-600 dark:bg-slate-800 dark:text-cyan-400' : 'text-slate-700 dark:text-slate-200'}`}
+                className={`text-left w-full px-4 py-2.5 rounded-xl text-sm font-bold ${currentView === 'home' ? 'bg-blue-50 text-blue-600 dark:bg-slate-800 dark:text-cyan-400' : 'text-slate-700 dark:text-slate-200'}`}
               >
-                Home Page
+                Home
               </button>
               <button
                 onClick={() => { onNavigate('calculators-all'); setMobileMenuOpen(false); }}
-                className={`text-left w-full px-4 py-2.5 rounded-xl text-sm font-medium ${currentView === 'calculators-all' ? 'bg-blue-50 text-blue-600 dark:bg-slate-800 dark:text-cyan-400' : 'text-slate-700 dark:text-slate-200'}`}
+                className={`text-left w-full px-4 py-2.5 rounded-xl text-sm font-bold ${currentView === 'calculators-all' ? 'bg-blue-50 text-blue-600 dark:bg-slate-800 dark:text-cyan-400' : 'text-slate-700 dark:text-slate-200'}`}
               >
-                All Calculators (70+)
+                Finance Tools (70+ Simulators)
+              </button>
+              <button
+                onClick={() => { onNavigate('category-guides', { category: 'guides' }); setMobileMenuOpen(false); }}
+                className={`text-left w-full px-4 py-2.5 rounded-xl text-sm font-bold ${currentView === 'category-guides' ? 'bg-blue-50 text-blue-600 dark:bg-slate-800 dark:text-cyan-400' : 'text-slate-700 dark:text-slate-200'}`}
+              >
+                Guides & Tutorials
               </button>
               <button
                 onClick={() => { onNavigate('blog'); setMobileMenuOpen(false); }}
-                className={`text-left w-full px-4 py-2.5 rounded-xl text-sm font-medium ${currentView === 'blog' ? 'bg-blue-50 text-blue-600 dark:bg-slate-800 dark:text-cyan-400' : 'text-slate-700 dark:text-slate-200'}`}
+                className={`text-left w-full px-4 py-2.5 rounded-xl text-sm font-bold ${currentView === 'blog' ? 'bg-blue-50 text-blue-600 dark:bg-slate-800 dark:text-cyan-400' : 'text-slate-700 dark:text-slate-200'}`}
               >
-                Finance Blog
+                Wealth Blog
               </button>
               <button
-                onClick={() => { onNavigate('dashboard'); setMobileMenuOpen(false); }}
-                className={`text-left w-full px-4 py-2.5 rounded-xl text-sm font-medium ${currentView === 'dashboard' ? 'bg-blue-50 text-blue-600 dark:bg-slate-800 dark:text-cyan-400' : 'text-slate-700 dark:text-slate-200'}`}
+                onClick={() => { onNavigate('sitemap'); setMobileMenuOpen(false); }}
+                className={`text-left w-full px-4 py-2.5 rounded-xl text-sm font-bold ${currentView === 'sitemap' ? 'bg-blue-50 text-blue-600 dark:bg-slate-800 dark:text-cyan-400' : 'text-slate-700 dark:text-slate-200'}`}
               >
-                User Dashboard
+                Portal Categories
               </button>
             </div>
 
-            <div className="pt-4 border-t border-slate-100 dark:border-slate-800 px-4">
-              <div className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2.5">Regional Format</div>
+            <div className="pt-3 border-t border-slate-100 dark:border-slate-800 px-4">
+              <div className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2.5">Finance Category Hubs</div>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { id: 'investment', label: 'Investment' },
+                  { id: 'loans', label: 'Loans' },
+                  { id: 'emi', label: 'EMI' },
+                  { id: 'mutual-funds', label: 'Mutual Funds' },
+                  { id: 'retirement', label: 'Retirement' },
+                  { id: 'savings', label: 'Savings' },
+                  { id: 'budgeting', label: 'Budgeting' },
+                  { id: 'taxes', label: 'Taxes' },
+                  { id: 'insurance', label: 'Insurance' },
+                  { id: 'banking', label: 'Banking' },
+                  { id: 'credit-cards', label: 'Credit Cards' },
+                ].map(sub => (
+                  <button
+                    key={sub.id}
+                    onClick={() => { onNavigate(`category-${sub.id}`, { category: sub.id }); setMobileMenuOpen(false); }}
+                    className="px-3 py-2 rounded-xl text-left border border-slate-100 dark:border-slate-850 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                  >
+                    {sub.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-3 border-t border-slate-100 dark:border-slate-800 px-4">
+              <div className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2.5">Company Principles</div>
+              <div className="grid grid-cols-3 gap-1.5">
+                {[
+                  { view: 'about-us', label: 'About' },
+                  { view: 'editorial-policy', label: 'Editorial' },
+                  { view: 'contact-us', label: 'Contact' },
+                ].map(lnk => (
+                  <button
+                    key={lnk.view}
+                    onClick={() => { onNavigate(lnk.view); setMobileMenuOpen(false); }}
+                    className="px-2 py-1.5 rounded-lg text-center border border-slate-100 dark:border-slate-850 text-[10px] font-bold text-slate-600 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800"
+                  >
+                    {lnk.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-3 border-t border-slate-100 dark:border-slate-800 px-4">
+              <div className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2.5 font-sans">Regional Presets</div>
               <div className="grid grid-cols-2 gap-2">
                 {REGIONAL_PRESETS.map(preset => {
                   const isActive = preset.id === currentPreset.id;
@@ -502,29 +621,10 @@ export default function Header({ currentView, onNavigate, darkMode, setDarkMode 
                     <button
                       key={preset.id}
                       onClick={() => setPreset(preset.id)}
-                      className={`px-3 py-2 rounded-xl text-left border text-xs font-bold transition-all flex items-center gap-1.5 ${isActive ? 'bg-blue-50 border-blue-200 text-blue-600 dark:bg-blue-950/20 dark:border-blue-900/50 dark:text-cyan-400' : 'border-slate-100 dark:border-slate-850 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
+                      className={`px-3 py-2 rounded-xl text-left border text-[11px] font-bold transition-all flex items-center gap-1.5 ${isActive ? 'bg-blue-50 border-blue-200 text-blue-600 dark:bg-blue-950/20 dark:border-blue-900/50 dark:text-cyan-400' : 'border-slate-100 dark:border-slate-850 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
                     >
                       <span className="text-sm">{preset.flag}</span>
-                      <span className="truncate">{preset.currency} ({preset.symbol})</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-slate-100 dark:border-slate-800">
-              <div className="text-xs font-bold text-slate-400 uppercase tracking-wider px-4 mb-2">Featured Calculators</div>
-              <div className="grid grid-cols-2 gap-2 px-2">
-                {['emi-calculator', 'sip-calculator', 'income-tax-calculator', 'budget-planner'].map(id => {
-                  const calc = calculators.find(c => c.id === id);
-                  if (!calc) return null;
-                  return (
-                    <button
-                      key={id}
-                      onClick={() => handleSelectCalculator(id)}
-                      className="text-left px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:text-blue-600"
-                    >
-                      {calc.name}
+                      <span className="truncate">{preset.currency}</span>
                     </button>
                   );
                 })}

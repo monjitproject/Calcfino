@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { normalizeUrl } from '../utils/seo';
 
 interface SEOProps {
   title: string;
@@ -10,10 +11,10 @@ interface SEOProps {
 
 export default function SEO({ title, description, schema, canonicalUrl, breadcrumbs }: SEOProps) {
   useEffect(() => {
-    // Dynamic Window title
-    document.title = `${title} | Calcfino.com`;
+    // 1. Direct Page Title Integration (no duplicate branding suffixes)
+    document.title = title;
 
-    // Dynamic Meta Description
+    // 2. Dynamic Meta Description
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
       metaDesc = document.createElement('meta');
@@ -22,16 +23,46 @@ export default function SEO({ title, description, schema, canonicalUrl, breadcru
     }
     metaDesc.setAttribute('content', description);
 
-    // Dynamic Open Graph Tags
-    const ogTags = {
+    // 3. Advanced Indexing Controls (Robots tag)
+    const normPath = normalizeUrl(window.location.pathname);
+    const isNoIndex = normPath.startsWith('/dashboard') || 
+                      normPath.startsWith('/search') || 
+                      normPath.startsWith('/admin') || 
+                      normPath.startsWith('/temp');
+    
+    let robotsMeta = document.querySelector('meta[name="robots"]');
+    if (!robotsMeta) {
+      robotsMeta = document.createElement('meta');
+      robotsMeta.setAttribute('name', 'robots');
+      document.head.appendChild(robotsMeta);
+    }
+    
+    if (isNoIndex) {
+      robotsMeta.setAttribute('content', 'noindex, nofollow');
+    } else {
+      robotsMeta.setAttribute('content', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
+    }
+
+    // 4. Dynamic Open Graph & Twitter Card Tags
+    const ogTags: Record<string, string> = {
       'og:title': title,
       'og:description': description,
-      'og:type': 'website',
-      'og:site_name': 'Calcfino.com',
+      'og:type': normPath.startsWith('/guides/') ? 'article' : 'website',
+      'og:site_name': 'Calcfino',
+      'og:locale': 'en_US',
       'twitter:card': 'summary_large_image',
       'twitter:title': title,
       'twitter:description': description,
     };
+
+    if (canonicalUrl) {
+      ogTags['og:url'] = canonicalUrl;
+    }
+
+    // Dynamic Social Card Asset Matching
+    const defaultOgImage = 'https://neelbyte.in/logo.png';
+    ogTags['og:image'] = defaultOgImage;
+    ogTags['twitter:image'] = defaultOgImage;
 
     Object.entries(ogTags).forEach(([property, content]) => {
       let meta = document.querySelector(`meta[property="${property}"]`) || document.querySelector(`meta[name="${property}"]`);
@@ -43,21 +74,23 @@ export default function SEO({ title, description, schema, canonicalUrl, breadcru
       meta.setAttribute('content', content);
     });
 
-    // Dynamic Schema script tags
-    const existingSchemaScript = document.getElementById('seo-structured-data');
-    if (existingSchemaScript) {
-      existingSchemaScript.remove();
-    }
+    // 5. Multi-Object JSON-LD Schema Injection
+    const existingSchemaScripts = document.querySelectorAll('.seo-structured-data');
+    existingSchemaScripts.forEach(s => s.remove());
 
     if (schema) {
-      const script = document.createElement('script');
-      script.id = 'seo-structured-data';
-      script.type = 'application/ld+json';
-      script.text = JSON.stringify(schema);
-      document.head.appendChild(script);
+      const schemasArray = Array.isArray(schema) ? schema : [schema];
+      schemasArray.forEach((schemaObj, index) => {
+        const script = document.createElement('script');
+        script.className = 'seo-structured-data';
+        script.id = `seo-structured-data-${index}`;
+        script.type = 'application/ld+json';
+        script.text = JSON.stringify(schemaObj);
+        document.head.appendChild(script);
+      });
     }
 
-    // Dynamic Canonical Link tag
+    // 6. Dynamic Canonical Link tag
     const existingCanonical = document.querySelector('link[rel="canonical"]');
     if (existingCanonical) {
       existingCanonical.remove();
@@ -74,13 +107,13 @@ export default function SEO({ title, description, schema, canonicalUrl, breadcru
   return null;
 }
 
-// Generate high-fidelity schemas for different pages
+// Keep helper exports for absolute backwards-compatibility (they map seamlessly to our centralized seo.ts system)
 export const getOrganizationSchema = () => ({
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  'name': 'Calcfino.com',
-  'url': window.location.origin,
-  'logo': `${window.location.origin}/logo.png`,
+  'name': 'Calcfino',
+  'url': 'https://neelbyte.in',
+  'logo': 'https://neelbyte.in/logo.png',
   'sameAs': [
     'https://twitter.com/calcfino',
     'https://linkedin.com/company/calcfino',
@@ -90,24 +123,24 @@ export const getOrganizationSchema = () => ({
 export const getWebSiteSchema = () => ({
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  'name': 'Calcfino.com',
-  'url': window.location.origin,
+  'name': 'Calcfino',
+  'url': 'https://neelbyte.in',
   'potentialAction': {
     '@type': 'SearchAction',
-    'target': `${window.location.origin}/?search={search_term_string}`,
+    'target': 'https://neelbyte.in/search?q={search_term_string}',
     'query-input': 'required name=search_term_string',
   },
 });
 
 export const getCalculatorSchema = (name: string, description: string, url: string) => ({
   '@context': 'https://schema.org',
-  '@type': 'WebApplication',
+  '@type': 'SoftwareApplication',
   'name': name,
   'description': description,
   'url': url,
-  'applicationCategory': 'BusinessApplication',
+  'applicationCategory': 'FinancialApplication',
   'operatingSystem': 'All',
-  'browserRequirements': 'Requires HTML5 and JavaScript Support',
+  'browserRequirements': 'Requires HTML5, ES6, and client-side Javascript enablement',
 });
 
 export const getBreadcrumbsSchema = (items: { name: string; url: string }[]) => ({
@@ -117,7 +150,7 @@ export const getBreadcrumbsSchema = (items: { name: string; url: string }[]) => 
     '@type': 'ListItem',
     'position': index + 1,
     'name': item.name,
-    'item': item.url,
+    'item': item.url.startsWith('http') ? item.url : `https://neelbyte.in${item.url}`,
   })),
 });
 

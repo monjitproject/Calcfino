@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Search, BookOpen, Clock, Calendar, ChevronRight, Sparkles, ChevronLeft } from 'lucide-react';
-import { blogPosts } from '../data/blog';
 import { BlogPost } from '../types';
 import SEO, { getFAQSchema } from '../components/SEO';
 import AdPlaceholder from '../components/AdPlaceholder';
+import { useCms } from '../context/CmsContext';
 
 interface BlogPageProps {
   onNavigate: (view: string, params?: any) => void;
@@ -16,8 +16,15 @@ interface BlogPageProps {
 }
 
 export default function BlogPage({ onNavigate, viewParams }: BlogPageProps) {
+  const { articles } = useCms();
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>(blogPosts);
+
+  // Get active live articles (excluding drafts, under-review, deleted, archived)
+  const activeArticles = React.useMemo(() => {
+    return articles.filter(a => !a.deleted && (a.contentStatus === 'published' || a.contentStatus === 'updated'));
+  }, [articles]);
+
+  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>(activeArticles);
 
   const categories = ['All', 'Personal Finance', 'Investment', 'Tax Saving', 'Mutual Funds', 'Stock Market', 'Cryptocurrency', 'Insurance', 'Loans', 'Retirement Planning'];
 
@@ -31,7 +38,7 @@ export default function BlogPage({ onNavigate, viewParams }: BlogPageProps) {
   const activeCategory = categories.find(cat => cat.toLowerCase().replace(/\s+/g, '-') === activeCategorySlug) || 'All';
 
   useEffect(() => {
-    let result = blogPosts;
+    let result = activeArticles;
 
     // 1. Filter by category slug
     if (activeCategory !== 'All') {
@@ -64,7 +71,7 @@ export default function BlogPage({ onNavigate, viewParams }: BlogPageProps) {
     }
 
     setFilteredPosts(result);
-  }, [searchQuery, activeCategory, activeTagSlug, activeAuthorSlug]);
+  }, [searchQuery, activeCategory, activeTagSlug, activeAuthorSlug, activeArticles]);
 
   const handleSelectPost = (slug: string) => {
     onNavigate(`blog-${slug}`, { slug });

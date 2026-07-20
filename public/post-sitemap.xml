@@ -1,34 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <url>
-    <loc>https://neelbyte.in/blog/mastering-the-50-30-20-budgeting-rule</loc>
-    <lastmod>2026-06-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&amp;auto=format&amp;fit=crop&amp;q=60</image:loc>
-      <image:title>Mastering the 50/30/20 Budgeting Rule</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://neelbyte.in/blog/the-magic-of-compounding-sip</loc>
-    <lastmod>2026-06-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&amp;auto=format&amp;fit=crop&amp;q=60</image:loc>
-      <image:title>The Magic of Compounding: How Systematic Investment Plans (SIP) Build Wealth</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://neelbyte.in/blog/navigating-the-capital-gains-tax-maze</loc>
-    <lastmod>2026-06-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1450133064473-71024230f91b?w=800&amp;auto=format&amp;fit=crop&amp;q=60</image:loc>
-      <image:title>Navigating the Capital Gains Tax Maze: Strategies to Minimize Liability</image:title>
-    </image:image>
-  </url>
+<urlset
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+    <url>
+        <loc>https://neelbyte.in/guides/mastering-the-50-30-20-budgeting-rule</loc>
+        <lastmod>2026-07-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&amp;auto=format&amp;fit=crop&amp;q=60</image:loc>
+            <image:title>Mastering the 50-30-20 Budgeting Rule</image:title>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://neelbyte.in/guides/the-magic-of-compounding-sip</loc>
+        <lastmod>2026-07-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&amp;auto=format&amp;fit=crop&amp;q=60</image:loc>
+            <image:title>The Magic of Compounding SIP</image:title>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://neelbyte.in/guides/navigating-the-capital-gains-tax-maze</loc>
+        <lastmod>2026-07-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1450133064473-71024230f91b?w=800&amp;auto=format&amp;fit=crop&amp;q=60</image:loc>
+            <image:title>Navigating the Capital Gains Tax Maze</image:title>
+        </image:image>
+    </url>
+
 </urlset>

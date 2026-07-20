@@ -16,13 +16,18 @@ import {
   TrendingUp,
   Award,
   Calendar,
-  DollarSign
+  DollarSign,
+  BookOpen,
+  AlertTriangle,
+  Check,
+  Shield
 } from 'lucide-react';
 import { calculators } from '../data/calculators';
 import { CalculationResult } from '../types';
-import SEO, { getCalculatorSchema } from '../components/SEO';
+import SEO, { getCalculatorSchema, getFAQSchema, getBreadcrumbsSchema } from '../components/SEO';
 import AdPlaceholder from '../components/AdPlaceholder';
 import { useRegionalSettings } from '../context/RegionalSettingsContext';
+import { getEducationalContent } from '../data/calculatorEducationalContent';
 import {
   ResponsiveContainer,
   PieChart,
@@ -231,6 +236,8 @@ export default function CalculatorPage({ id, initialInputs, onNavigate }: Calcul
       </div>
     );
   }
+
+  const edu = getEducationalContent(calc);
 
   // Manage dynamic inputs state
   const [inputs, setInputs] = useState<Record<string, any>>(() => {
@@ -522,12 +529,26 @@ export default function CalculatorPage({ id, initialInputs, onNavigate }: Calcul
   // Color theme variables for charts
   const CHART_COLORS = ['#2563EB', '#06B6D4', '#10B981', '#F59E0B', '#EC4899', '#8B5CF6'];
 
+  // Map FAQs for FAQPage Schema
+  const mappedFaqs = edu.faqs.map(faq => ({
+    question: faq.q,
+    answer: faq.a
+  }));
+
+  const calculatorSchema = getCalculatorSchema(calc.name, edu.subtitle, window.location.href);
+  const faqSchema = getFAQSchema(mappedFaqs);
+  const breadcrumbSchema = getBreadcrumbsSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Calculators', url: '/#calculators' },
+    { name: calc.name, url: `/calculator/${calc.id}` }
+  ]);
+
   return (
-    <div className="font-sans py-6 text-slate-800 dark:text-slate-100" id="calculator-detail-view">
+    <div className="font-sans py-4 text-slate-800 dark:text-slate-100 max-w-5xl mx-auto" id="calculator-detail-view">
       <SEO
-        title={calc.seoTitle || `${calc.name} - Real-Time Analysis`}
-        description={calc.seoDescription || calc.description}
-        schema={getCalculatorSchema(calc.name, calc.description, window.location.href)}
+        title={calc.seoTitle || `${edu.title} - Calcfino`}
+        description={calc.seoDescription || edu.subtitle}
+        schema={[calculatorSchema, faqSchema, breadcrumbSchema]}
       />
 
       {/* Back button and Favorite Trigger */}
@@ -538,7 +559,7 @@ export default function CalculatorPage({ id, initialInputs, onNavigate }: Calcul
           id="back-home-btn"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to Fintech Hub
+          Back to Financial Education Portal
         </button>
 
         <div className="flex gap-2">
@@ -561,11 +582,129 @@ export default function CalculatorPage({ id, initialInputs, onNavigate }: Calcul
         </div>
       </div>
 
+      {/* Editorial Title Block */}
+      <header className="border-b border-slate-100 dark:border-slate-800 pb-6 mb-8">
+        <div className="flex flex-wrap items-center gap-2 mb-3">
+          <span className="text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-cyan-400 border border-blue-100/60 dark:border-blue-900/40">
+            {calc.category.toUpperCase().replace('-', ' ')} ACADEMY
+          </span>
+          <span className="inline-flex items-center gap-1 text-[10px] text-slate-400 dark:text-slate-500 font-semibold">
+            <Shield className="w-3.5 h-3.5 text-emerald-500" />
+            Expert-Reviewed & Fact-Checked
+          </span>
+        </div>
+
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
+          {edu.title}
+        </h1>
+        <p className="text-lg text-slate-500 dark:text-slate-400 mt-2.5 leading-relaxed font-light">
+          {edu.subtitle}
+        </p>
+
+        {/* E-E-A-T Author & Metadata Row */}
+        <div className="mt-5 flex flex-wrap items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-[10px]">
+              CF
+            </div>
+            <div>
+              <span className="font-semibold text-slate-700 dark:text-slate-300">Calcfino Editorial Board</span>
+              <span className="text-slate-400 block text-[9px]">Fiduciary Math Standards & Compliance</span>
+            </div>
+          </div>
+          <div className="hidden sm:block h-4 w-px bg-slate-200 dark:bg-slate-800"></div>
+          <div className="flex items-center gap-1">
+            <Calendar className="w-3.5 h-3.5 text-slate-400" />
+            <span>Updated: July 2026</span>
+          </div>
+          <div className="hidden sm:block h-4 w-px bg-slate-200 dark:bg-slate-800"></div>
+          <div className="flex items-center gap-1">
+            <Award className="w-3.5 h-3.5 text-slate-400" />
+            <span>100% Free & Open Financial Math</span>
+          </div>
+        </div>
+      </header>
+
+      {/* Table of Contents / Executive Summary Box */}
+      <div className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/20 p-5 mb-8">
+        <h3 className="text-xs uppercase tracking-wider font-bold text-slate-400 dark:text-slate-500 mb-3 flex items-center gap-1.5">
+          <BookOpen className="w-4 h-4 text-blue-500" />
+          Inside This Educational Module
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs font-medium text-slate-600 dark:text-slate-300">
+          <a href="#introduction" className="hover:text-blue-500 transition-colors flex items-center gap-1">• 1. Introduction & Overview</a>
+          <a href="#what-is" className="hover:text-blue-500 transition-colors flex items-center gap-1">• 2. What is this Concept?</a>
+          <a href="#why-it-matters" className="hover:text-blue-500 transition-colors flex items-center gap-1">• 3. Tactical Significance & Timing</a>
+          <a href="#calculation-lab" className="hover:text-blue-500 transition-colors flex items-center gap-1 text-blue-600 dark:text-cyan-400 font-bold">• 4. LIVE Interactive Calculation Lab</a>
+          <a href="#mathematics" className="hover:text-blue-500 transition-colors flex items-center gap-1">• 5. Mathematical Formulas & Engine</a>
+          <a href="#comparison" className="hover:text-blue-500 transition-colors flex items-center gap-1">• 6. Advantages vs. Disadvantages</a>
+          <a href="#concepts" className="hover:text-blue-500 transition-colors flex items-center gap-1">• 7. Associated Financial Concepts</a>
+          <a href="#faqs" className="hover:text-blue-500 transition-colors flex items-center gap-1">• 8. Frequently Asked Questions (FAQ)</a>
+        </div>
+      </div>
+
+      {/* Segment 1: Introduction */}
+      <section id="introduction" className="prose dark:prose-invert max-w-none mb-8">
+        <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+          <span className="text-xs w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-cyan-400 flex items-center justify-center font-bold">1</span>
+          Executive Introduction
+        </h2>
+        <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300 font-normal">
+          {edu.intro}
+        </p>
+      </section>
+
+      {/* Segment 2: What is this concept? */}
+      <section id="what-is" className="prose dark:prose-invert max-w-none mb-8">
+        <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+          <span className="text-xs w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-cyan-400 flex items-center justify-center font-bold">2</span>
+          Understanding the Underlying Principles
+        </h2>
+        <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300 font-normal">
+          {edu.whatIs}
+        </p>
+      </section>
+
+      {/* Segment 3: Why it matters & when to use */}
+      <section id="why-it-matters" className="prose dark:prose-invert max-w-none mb-10">
+        <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+          <span className="text-xs w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-cyan-400 flex items-center justify-center font-bold">3</span>
+          Why This Tool Matters & Tactical Applications
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+          <div className="p-5 rounded-2xl bg-white dark:bg-[#0E1322] border border-slate-100 dark:border-slate-800 shadow-sm">
+            <h4 className="text-xs uppercase tracking-wider font-extrabold text-blue-600 dark:text-cyan-400 mb-2">Tactical Significance</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              {edu.whyMatters}
+            </p>
+          </div>
+          <div className="p-5 rounded-2xl bg-white dark:bg-[#0E1322] border border-slate-100 dark:border-slate-800 shadow-sm">
+            <h4 className="text-xs uppercase tracking-wider font-extrabold text-emerald-600 dark:text-emerald-400 mb-2">Optimal Timing & Action Triggers</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              {edu.whenToUse}
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Above fold ad banner space */}
-      <AdPlaceholder slot="calc-above-fold" height="90px" label="Sponsored Calculator Header Banner Ad" className="mb-6" />
+      <AdPlaceholder slot="calc-above-fold" height="90px" label="Sponsored Calculator Header Banner Ad" className="mb-8" />
+
+      {/* Segment 4: LIVE CALCULATION LAB HEADER */}
+      <section id="calculation-lab" className="mb-6 pt-2 border-t border-slate-100 dark:border-slate-800">
+        <div className="p-4 rounded-2xl bg-gradient-to-r from-blue-50/50 to-indigo-50/30 dark:from-blue-950/10 dark:to-indigo-950/15 border border-blue-100/50 dark:border-blue-900/30 mb-6">
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-1.5 flex items-center gap-2">
+            <span className="text-xs w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">4</span>
+            LIVE Interactive Calculation Lab
+          </h2>
+          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+            Drag the range sliders and customize the dynamic inputs below. The system is executing high-fidelity algebraic computations locally in your browser memory to compile standard financial results, charts, and amortization calendars instantly.
+          </p>
+        </div>
+      </section>
 
       {/* Calculator Main Layout Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-10">
         
         {/* Left Span (5): Interactive input controls */}
         <div className="lg:col-span-5 flex flex-col gap-6">
@@ -968,6 +1107,202 @@ export default function CalculatorPage({ id, initialInputs, onNavigate }: Calcul
         </div>
 
       </div>
+
+      {/* Segment 5: Mathematical Formulas & Mechanics */}
+      <section id="mathematics" className="pt-8 border-t border-slate-150 dark:border-slate-800 mb-10">
+        <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+          <span className="text-xs w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-cyan-400 flex items-center justify-center font-bold">5</span>
+          Mathematical Formulas & Calculation Engine
+        </h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="md:col-span-1 p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/40 border border-slate-150 dark:border-slate-800 flex flex-col justify-center items-center text-center">
+            <span className="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest font-extrabold mb-2">Core Formula</span>
+            <div className="p-3.5 rounded-xl font-mono text-xs font-black bg-white dark:bg-slate-950 border border-slate-150 dark:border-slate-800 text-blue-600 dark:text-cyan-400 shadow-inner break-all max-w-full">
+              {calc.formula || 'V = f(x, y, z)'}
+            </div>
+          </div>
+          
+          <div className="md:col-span-2 space-y-3">
+            <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+              {edu.mathBreakdown}
+            </p>
+          </div>
+        </div>
+
+        {/* Real life example block */}
+        <div className="mt-6 p-5 rounded-2xl border border-blue-100 dark:border-blue-900 bg-blue-50/20 dark:bg-blue-950/5">
+          <h4 className="text-xs uppercase tracking-wider font-extrabold text-blue-600 dark:text-cyan-400 mb-2 flex items-center gap-1">
+            <FileText className="w-4 h-4" />
+            Step-by-Step Practical Scenario (Case Study)
+          </h4>
+          <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400 whitespace-pre-line font-light">
+            {edu.realLifeCase}
+          </p>
+        </div>
+      </section>
+
+      {/* Segment 6: Comparative Analysis */}
+      <section id="comparison" className="pt-8 border-t border-slate-150 dark:border-slate-800 mb-10">
+        <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+          <span className="text-xs w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-cyan-400 flex items-center justify-center font-bold">6</span>
+          Comparative Advantages vs. Disadvantages
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-5 rounded-2xl bg-emerald-50/10 dark:bg-emerald-950/5 border border-emerald-100 dark:border-emerald-900/30">
+            <h3 className="text-xs uppercase tracking-wider font-extrabold text-emerald-600 dark:text-emerald-400 mb-3 flex items-center gap-1.5">
+              <Check className="w-4 h-4 text-emerald-500" />
+              Primary Advantages
+            </h3>
+            <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-400">
+              {edu.advantages.map((item, idx) => (
+                <li key={idx} className="flex gap-2">
+                  <span className="text-emerald-500 font-bold">•</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="p-5 rounded-2xl bg-rose-50/10 dark:bg-rose-950/5 border border-rose-100 dark:border-rose-900/30">
+            <h3 className="text-xs uppercase tracking-wider font-extrabold text-rose-600 dark:text-rose-400 mb-3 flex items-center gap-1.5">
+              <AlertTriangle className="w-4 h-4 text-rose-500" />
+              Limitations & Drawbacks
+            </h3>
+            <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-400">
+              {edu.disadvantages.map((item, idx) => (
+                <li key={idx} className="flex gap-2">
+                  <span className="text-rose-400 font-bold">•</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Dynamic Warning Card */}
+        <div className="mt-6 p-4 rounded-xl border border-amber-200/60 dark:border-amber-900/40 bg-amber-50/20 dark:bg-amber-950/5 text-xs text-slate-600 dark:text-slate-400">
+          <h4 className="font-bold text-amber-700 dark:text-amber-400 mb-1.5 flex items-center gap-1.5">
+            <AlertTriangle className="w-4 h-4" />
+            Mathematical Simplification Disclaimer
+          </h4>
+          <p className="leading-relaxed">
+            While algebraic modeling is highly accurate for baseline budgeting, real markets fluctuate dynamically. Under-estimating inflation offsets or over-estimating compound gains are standard pitfalls. Use these calculations as structural guidelines, not absolute guarantees of future market outcomes.
+          </p>
+        </div>
+      </section>
+
+      {/* Segment 7: Associated Financial Concepts */}
+      <section id="concepts" className="pt-8 border-t border-slate-150 dark:border-slate-800 mb-10">
+        <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+          <span className="text-xs w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-cyan-400 flex items-center justify-center font-bold">7</span>
+          Key Associated Financial Concepts
+        </h2>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          {edu.keyConcepts.map((item, idx) => (
+            <div key={idx} className="p-4 rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-[#0E1322] shadow-sm">
+              <h5 className="font-bold text-xs text-slate-900 dark:text-white mb-1">{item.term}</h5>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed font-light">{item.definition}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Common Mistakes Bulletins */}
+        <div className="mt-6 p-5 rounded-2xl border border-slate-150 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/20">
+          <h4 className="text-xs uppercase tracking-wider font-extrabold text-slate-400 dark:text-slate-500 mb-3 flex items-center gap-1.5">
+            <AlertTriangle className="w-4 h-4 text-amber-500" />
+            Common Pitfalls & Mistakes to Avoid
+          </h4>
+          <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-400">
+            {edu.commonMistakes.map((item, idx) => (
+              <li key={idx} className="flex gap-2">
+                <span className="text-red-500 font-bold">✗</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Segment 8: Frequently Asked Questions */}
+      <section id="faqs" className="pt-8 border-t border-slate-150 dark:border-slate-800 mb-10">
+        <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+          <span className="text-xs w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-cyan-400 flex items-center justify-center font-bold">8</span>
+          Frequently Asked Questions (FAQ)
+        </h2>
+
+        <div className="space-y-3">
+          {edu.faqs.map((faq, idx) => (
+            <details key={idx} className="group border border-slate-150 dark:border-slate-800 rounded-2xl bg-white dark:bg-[#0E1322] p-4 transition-all">
+              <summary className="flex justify-between items-center font-bold text-xs cursor-pointer select-none text-slate-900 dark:text-white group-open:text-blue-500 dark:group-open:text-cyan-400">
+                <span>{faq.q}</span>
+                <span className="transition-transform group-open:rotate-180 text-slate-400 text-lg leading-none">+</span>
+              </summary>
+              <p className="mt-3 text-xs leading-relaxed text-slate-500 dark:text-slate-400 font-light border-t border-slate-100 dark:border-slate-800/80 pt-3">
+                {faq.a}
+              </p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      {/* Segment 9: Academic References & Regulatory Resources */}
+      <section className="pt-6 border-t border-slate-150 dark:border-slate-800 mb-8 text-xs text-slate-400 dark:text-slate-500">
+        <h4 className="font-bold uppercase tracking-wider mb-2 text-[10px]">Academic and Regulatory Citation Resources</h4>
+        <ul className="space-y-1 font-light italic list-decimal pl-4">
+          {edu.references.map((item, idx) => (
+            <li key={idx}>{item}</li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Segment 10: RELATED CALCULATORS & NAVIGATION LINK RAIL */}
+      <section className="p-6 rounded-2xl border border-slate-150 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/20 mb-10">
+        <h4 className="text-xs uppercase tracking-wider font-extrabold text-slate-400 dark:text-slate-500 mb-4 flex items-center gap-1.5">
+          <TrendingUp className="w-4 h-4 text-blue-500" />
+          Related Financial Planning Tools
+        </h4>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {calculators
+            .filter(c => c.category === calc.category && c.id !== calc.id)
+            .slice(0, 4)
+            .map(related => (
+              <button
+                key={related.id}
+                onClick={() => {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  onNavigate('calculator', { id: related.id });
+                }}
+                className="p-3 text-left rounded-xl border border-slate-150 dark:border-slate-800/60 bg-white dark:bg-slate-950/40 hover:border-blue-500 dark:hover:border-cyan-400 hover:shadow-sm transition-all"
+              >
+                <div className="font-bold text-xs text-slate-900 dark:text-white mb-0.5">{related.name}</div>
+                <div className="text-[10px] text-slate-500 dark:text-slate-400 truncate leading-tight">{related.shortDescription}</div>
+              </button>
+            ))}
+        </div>
+      </section>
+
+      {/* Final Verification Stamp and Guarantee Row */}
+      <footer className="border-t border-slate-150 dark:border-slate-800 pt-6 mb-10 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full border-2 border-emerald-500/30 bg-emerald-50 dark:bg-emerald-950/20 flex items-center justify-center shadow-sm">
+            <Shield className="w-5 h-5 text-emerald-500" />
+          </div>
+          <div>
+            <div className="text-xs font-extrabold text-slate-900 dark:text-white flex items-center gap-1">
+              Calcfino Trust & Math Verification Seal
+            </div>
+            <div className="text-[10px] text-slate-500 dark:text-slate-400 leading-normal font-light">
+              This module operates on open academic equations verified against standard corporate finance tables.
+            </div>
+          </div>
+        </div>
+        <div className="text-[10px] text-slate-400 dark:text-slate-500 text-right">
+          © 2026 Calcfino Academic Portal. Fiduciary Math Standards.
+        </div>
+      </footer>
 
     </div>
   );

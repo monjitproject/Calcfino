@@ -84,21 +84,19 @@ export default function Footer({ onNavigate }: FooterProps) {
         {/* Legal Pages */}
         <div>
           <span className="text-xs font-bold uppercase tracking-wider text-white">Legal & Compliance</span>
-          <ul className="mt-4 space-y-2 text-xs">
-            <li>
-              <button onClick={() => onNavigate('about-us')} className="hover:text-white transition-colors">About Us</button>
-            </li>
-            <li>
-              <button onClick={() => onNavigate('contact-us')} className="hover:text-white transition-colors">Contact Us</button>
-            </li>
-            <li>
-              <button onClick={() => onNavigate('privacy-policy')} className="hover:text-white transition-colors">Privacy Policy</button>
-            </li>
-            <li>
-              <button onClick={() => onNavigate('terms-conditions')} className="hover:text-white transition-colors">Terms of Service</button>
-            </li>
-            <li>
-              <button onClick={() => onNavigate('disclaimer')} className="hover:text-white transition-colors">Disclaimer Policy</button>
+          <ul className="mt-4 space-y-2.5 text-xs">
+            <li className="grid grid-cols-2 gap-x-2 gap-y-2">
+              <button onClick={() => onNavigate('about-us')} className="text-left hover:text-white transition-colors">About Us</button>
+              <button onClick={() => onNavigate('contact-us')} className="text-left hover:text-white transition-colors">Contact Us</button>
+              <button onClick={() => onNavigate('privacy-policy')} className="text-left hover:text-white transition-colors">Privacy Policy</button>
+              <button onClick={() => onNavigate('terms-conditions')} className="text-left hover:text-white transition-colors">Terms of Use</button>
+              <button onClick={() => onNavigate('disclaimer')} className="text-left hover:text-white transition-colors">Disclaimer</button>
+              <button onClick={() => onNavigate('cookie-policy')} className="text-left hover:text-white transition-colors">Cookie Policy</button>
+              <button onClick={() => onNavigate('editorial-policy')} className="text-left hover:text-white transition-colors">Editorial Policy</button>
+              <button onClick={() => onNavigate('dmca')} className="text-left hover:text-white transition-colors">DMCA Policy</button>
+              <button onClick={() => onNavigate('accessibility')} className="text-left hover:text-white transition-colors">Accessibility</button>
+              <button onClick={() => onNavigate('corrections')} className="text-left hover:text-white transition-colors">Corrections</button>
+              <button onClick={() => onNavigate('sitemap')} className="text-left hover:text-white transition-colors">Site Map</button>
             </li>
           </ul>
         </div>
